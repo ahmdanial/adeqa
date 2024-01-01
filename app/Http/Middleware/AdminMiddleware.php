@@ -19,7 +19,7 @@ class AdminMiddleware
     {
         $user = Auth::user();
 
-        if ($user->roles == 'superadmin' || $user->roles == 'admin') {
+        if ($user->roles == 'superadmin' || $user->roles == 'admin' || $user->roles == 'user') {
             return $next($request);
         } else {
             return redirect('/home')->with('status', 'You are not allowed to access admin dashboard');

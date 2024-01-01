@@ -41,7 +41,7 @@
 
 <body class="">
   <div class="wrapper ">
-    <div class="sidebar" data-color="blue"><!-- Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow" -->
+    <div class="sidebar" data-color="green"><!-- Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow" -->
       <div class="logo">
         <a href="http://www.creative-tim.com" class="simple-text logo-mini">
             AD
@@ -53,10 +53,10 @@
       </div>
       <div class="sidebar-wrapper" id="sidebar-wrapper">
         <ul class="nav">
-        <li class="{{ 'assign-tests' == request()->path() ? 'active' : '' }}">
-            <a href="./assign-tests">
+        <li class="{{ 'entry-results' == request()->path() ? 'active' : '' }}">
+            <a href="./entry-results">
                 <i class="now-ui-icons loader_gear"></i>
-                <p>Assign Tests</p>
+                <p>Data Entry</p>
             </a>
             </li>
 
@@ -158,8 +158,6 @@
         @yield('content')
 
       </div>
-
-
 
       <footer class="footer">
         <div class=" container-fluid ">

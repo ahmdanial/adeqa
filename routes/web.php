@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\AssignProgramController;
 use App\Http\Controllers\Admin\AssignUserController;
+use App\Http\Controllers\user\DataEntryController;
 use App\Http\Controllers\userAdmin\AssignTestController;
 
 use Illuminate\Support\Facades\Auth;
@@ -115,5 +116,18 @@ Route::group(['middleware' => ['admin']], function () {
     Route::get('/assign-tests/{id}', [AssignTestController::class, 'edit']);
     Route::put('/assign-tests-update/{id}', [AssignTestController::class, 'update']);
     Route::delete('/assign-tests-delete/{id}', [AssignTestController::class, 'delete']);
+
+});
+
+Route::group(['middleware' => ['user']], function () {
+    Route::get('entry-results', function () {
+        return view('user.entry-results');
+    });
+
+    Route::get('entry-results', [DataEntryController::class, 'index']);
+    Route::post('/save-entry-results', [DataEntryController::class, 'store']);
+    Route::get('/entry-results/{id}', [DataEntryController::class, 'edit']);
+    Route::put('/entry-results-update/{id}', [DataEntryController::class, 'update']);
+    Route::delete('/entry-results-delete/{id}', [DataEntryController::class, 'delete']);
 
 });

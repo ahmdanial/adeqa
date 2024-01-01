@@ -36,6 +36,8 @@ class LoginController extends Controller
             return 'user-register';
         } elseif ($userRoles == 'admin') {
             return 'assign-tests';
+        } elseif ($userRoles == 'user') {
+            return 'entry-results';
         } else {
             return 'home';
         }
