@@ -164,10 +164,11 @@
                 <th class="w-10p">Method </th>
                 <th class="w-10p">Unit </th>
                 <th class="w-10p">Result </th>
-                <th class="w-10p">Added By</th>
-                <th class="w-10p">Updated By</th>
                 <th class="w-10p">EDIT</th>
                 <th class="w-10p">DELETE</th>
+                <th class="w-10p">VIEW</th>
+                <th class="w-10p">PRINT</th>
+
               </thead>
               <tbody>
                 @foreach ($entryresults as $data)
@@ -235,22 +236,6 @@
                     <td>{{ $data->result }}</td>
 
                   <td>
-                    @if ($data->addedBy)
-                        {{ $data->addedBy->username }}
-                    @else
-                        N/A
-                    @endif
-                </td>
-
-                <td>
-                    @if ($data->updateBy)
-                        {{ $data->updateBy->username }}
-                    @else
-                        N/A
-                    @endif
-                </td>
-
-                  <td>
                     <a href="{{ url('entry-results/'.$data->id) }}" class="btn btn-success">
                         <i class="now-ui-icons ui-1_settings-gear-63"></i></a>
                     </td>
@@ -258,6 +243,17 @@
                     <a href="javascript:void(0)" class="btn btn-danger deletebtn">
                         <i class="now-ui-icons ui-1_simple-remove"></i></a>
                     </td>
+
+                    <td>
+                        <a href="{{ url('entry-results/receipt/'.$data->id) }}" class="btn btn-warning" target="_blank">
+                            <i class="now-ui-icons ui-1_zoom-bold"></i></a>
+                    </td>
+
+                    <td>
+                        <a href="{{ url('entry-results/receipt/'.$data->id.'/generate') }}" class="btn btn-info">
+                            <i class="now-ui-icons files_paper"></i></a>
+                    </td>
+
                 </tr>
                 @endforeach
               </tbody>
@@ -291,5 +287,10 @@
                 $('#deletemodalpop').modal('show');
             });
         });
+
+        document.getElementById('printToPdfBtn').addEventListener('click', function () {
+        var element = document.getElementById('datatable'); // ID of the table or any other element you want to convert to PDF
+        html2pdf(element);
+    });
     </script>
 @endsection

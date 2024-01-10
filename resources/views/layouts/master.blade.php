@@ -47,7 +47,7 @@
             AD
         </a>
         <a href="https://web.facebook.com/people/Alfa-Diagnostik-Sdn-Bhd/100064047660052/?_rdc=1&_rdr" class="simple-text logo-normal">
-          ALFA DIAGNOSTIK
+          ADEQA
         </a>
 
       </div>
@@ -141,7 +141,7 @@
               </button>
             </div>
             <a class="navbar-brand" href="#">
-                <img src="{{ asset('images/logo.png') }}" alt="ADEQA Logo" height="60">
+                <img src="{{ asset('images/adeqa-white.png') }}" alt="ADEQA Logo" height="60">
             </a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">

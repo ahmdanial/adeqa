@@ -124,7 +124,7 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <h4 class="card-title">ASSIGN USER SETUP
+          <h4 class="card-title">ASSIGN TESTS SETUP
             <button type="button" class="btn btn-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModal">
              <i class="now-ui-icons ui-1_simple-add"></i>
             </button>

@@ -13,6 +13,8 @@ use App\Models\Test;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Carbon;
 
 class DataEntryController extends Controller
 {
@@ -95,4 +97,47 @@ class DataEntryController extends Controller
         Session::flash('statuscode', 'success');
         return redirect('/entry-results')->with('status', 'Assigned Test Deleted Successfully');
     }
+
+    public function viewReceipt(int $id)
+    {
+        $path = base_path('public\images\logo2.png');
+        $path1 = base_path('public\images\adeqa-black.png');
+
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $type1 = pathinfo($path1, PATHINFO_EXTENSION);
+
+        $data = file_get_contents($path);
+        $data1 = file_get_contents($path1);
+
+        $pic = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        $pic1 = 'data:image/' . $type1 . ';base64,' . base64_encode($data1);
+
+        $entryresult = EntryResult::findOrFail($id);
+        return view('user.receipt.generate-receipt', compact('entryresult', 'pic', 'pic1'));
+    }
+
+    public function generateReceipt(int $id)
+    {
+        $path = base_path('public\images\logo2.png');
+        $path1 = base_path('public\images\adeqa-black.png');
+
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $type1 = pathinfo($path1, PATHINFO_EXTENSION);
+
+        $data = file_get_contents($path);
+        $data1 = file_get_contents($path1);
+
+        $pic = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        $pic1 = 'data:image/' . $type1 . ';base64,' . base64_encode($data1);
+
+        $entryresult = EntryResult::findOrFail($id);
+
+        $pdf = Pdf::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+            ->loadView('user.receipt.generate-receipt', ['entryresult' => $entryresult, 'pic' => $pic, 'pic1' => $pic1]);
+
+        // You can customize the filename and headers as needed
+        $todayDate = now()->format('Y-m-d');
+        return $pdf->download('receipt-'.$entryresult->id.'-'.$todayDate.'.pdf');
+    }
+
 }

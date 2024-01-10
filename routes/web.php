@@ -130,4 +130,6 @@ Route::group(['middleware' => ['user']], function () {
     Route::put('/entry-results-update/{id}', [DataEntryController::class, 'update']);
     Route::delete('/entry-results-delete/{id}', [DataEntryController::class, 'delete']);
 
+    Route::get('/receipt/{id}', [DataEntryController::class, 'viewReceipt']);
+    Route::get('/receipt/{id}/generate', [DataEntryController::class, 'generateReceipt']);
 });

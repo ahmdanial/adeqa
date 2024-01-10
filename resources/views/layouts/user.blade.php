@@ -77,7 +77,7 @@
               </button>
             </div>
             <a class="navbar-brand" href="#">
-                <img src="{{ asset('images/logo.png') }}" alt="ADEQA Logo" height="60">
+                <img src="{{ asset('images/adeqa-white.png') }}" alt="ADEQA Logo" height="60">
             </a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
@@ -195,6 +195,7 @@
   <script src="../assets/js/core/bootstrap.min.js"></script>
   <script src="{{ asset('assets/js/dataTables.min.js') }}"></script>
   <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.js"></script>
   <!--  Google Maps Plugin    -->
   <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
   <!-- Chart JS -->
@@ -206,6 +207,7 @@
   <script src="../assets/demo/demo.js"></script>
 
   <script src="{{ asset('assets/js/sweetalert2.js') }}"></script>
+
   <script>
     @if (session('status'))
             //alert('{{ session('status') }}');
