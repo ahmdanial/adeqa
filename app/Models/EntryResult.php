@@ -13,13 +13,6 @@ class EntryResult extends Model
 
     protected $fillable = [
         'sampledate',
-        'lab_id',
-        'prog_id',
-        'instrument_id',
-        'reagent_id',
-        'testcode',
-        'method_id',
-        'unit_id',
         'result',
         'added_by',
         'update_by',

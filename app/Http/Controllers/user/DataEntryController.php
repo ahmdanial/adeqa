@@ -11,10 +11,6 @@ use App\Models\Method;
 use App\Models\Unit;
 use App\Models\Test;
 use Illuminate\Support\Facades\Session;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Carbon;
 
 class DataEntryController extends Controller
 {
@@ -57,13 +53,6 @@ class DataEntryController extends Controller
     public function edit($id)
     {
         $entryresult = EntryResult::findOrFail($id);
-        $programs = Program::all();
-        $labs = Lab::all();
-        $instruments = Instrument::all();
-        $reagents = Reagent::all();
-        $methods = Method::all();
-        $units = Unit::all();
-        $tests = Test::all();
 
         return view('user.assign.edit-result', compact('entryresult', 'programs', 'labs', 'instruments', 'reagents', 'methods', 'units', 'tests'));
     }

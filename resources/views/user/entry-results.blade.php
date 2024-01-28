@@ -247,13 +247,9 @@
                     <td>
                         <a href="{{ url('entry-results/receipt/'.$data->id) }}" class="btn btn-warning" target="_blank">
                             <i class="now-ui-icons ui-1_zoom-bold"></i></a>
-                    </td>
-
-                    <td>
                         <a href="{{ url('entry-results/receipt/'.$data->id.'/generate') }}" class="btn btn-info">
                             <i class="now-ui-icons files_paper"></i></a>
                     </td>
-
                 </tr>
                 @endforeach
               </tbody>

@@ -18,14 +18,6 @@
           <form action="/save-assign-tests" method="POST">
 
             {{ csrf_field() }}
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Program:</label>
-                <select name="prog_id" class="form-control" id="prog_id">
-                    @foreach($programs as $program)
-                        <option value="{{ $program->id }}">{{ $program->programname }}</option>
-                    @endforeach
-                </select>
-            </div>
 
             <div class="mb-3">
                 <label for="recipient-name" class="col-form-label">Lab:</label>
@@ -58,9 +50,11 @@
                 <label for="recipient-name" class="col-form-label">Test:</label>
                 <select name="testcode" class="form-control" id="testcode">
                     @foreach($tests as $test)
-                        <option value="{{ $test->testcode }}">{{ $test->testname }}</option>
-                    @endforeach
-                </select>
+                    <div class="form-check1">
+                        <input type="checkbox" class="form-check-input1" name="testcode[]" value="{{ $test->testcode }}" id="test_{{ $test->testcode }}">
+                        <label class="form-check-label" for="test_{{ $test->testcode }}">{{ $test->testname }}</label>
+                    </div>
+                @endforeach
             </div>
 
             <div class="mb-3">

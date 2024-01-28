@@ -34,7 +34,6 @@ class CreateAssigntestTable extends Migration
             $table->foreign('testcode')->references('testcode')->on('tests')->onDelete('cascade');
             $table->foreign('method_id')->references('id')->on('methods')->onDelete('cascade');
             $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade');
-
             $table->foreign('added_by')->references('id')->on('users')->onDelete('set null');
             $table->foreign('update_by')->references('id')->on('users')->onDelete('set null');
         });

@@ -38,7 +38,6 @@ class AssignTestController extends Controller
         $assignTest->prog_id = $request->input('prog_id');
         $assignTest->instrument_id = $request->input('instrument_id');
         $assignTest->reagent_id = $request->input('reagent_id');
-        $assignTest->testcode = $request->input('testcode');
         $assignTest->method_id = $request->input('method_id');
         $assignTest->unit_id = $request->input('unit_id');
         $assignTest->added_by = auth()->user()->id;
