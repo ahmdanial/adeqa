@@ -89,8 +89,7 @@
                 <th class="w-10p">Analyte Name</th>
                 <th class="w-10p">Added By</th>
                 <th class="w-10p">Updated By</th>
-                <th class="w-10p">EDIT</th>
-                <th class="w-10p">DELETE</th>
+                <th class="w-10p" style="text-align: center;">ACTIONS</th>
               </thead>
               <tbody>
                 @foreach ($analytes as $data)

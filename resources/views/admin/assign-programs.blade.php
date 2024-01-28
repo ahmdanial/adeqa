@@ -105,8 +105,7 @@
                 <th class="w-10p">Lab</th>
                 <th class="w-10p">Added By</th>
                 <th class="w-10p">Updated By</th>
-                <th class="w-10p">EDIT</th>
-                <th class="w-10p">DELETE</th>
+                <th class="w-10p" style="text-align: center;">ACTIONS</th>
               </thead>
               <tbody>
                 @foreach ($assignPrograms as $data)
@@ -140,13 +139,11 @@
                         N/A
                     @endif
                 </td>
-                  <td>
-                    <a href="{{ url('assign-programs/'.$data->id) }}" class="btn btn-success">
-                        <i class="now-ui-icons ui-1_settings-gear-63"></i></a>
-                    </td>
-                  <td>
-                    <a href="javascript:void(0)" class="btn btn-danger deletebtn">
-                        <i class="now-ui-icons ui-1_simple-remove"></i></a>
+                    <td style="display: flex; justify-content: center;">
+                        <a href="{{ url('assign-programs/'.$data->id)}}" class="btn btn-success">
+                            <i class="fas fa-pen"></i></a>&nbsp;&nbsp;
+                        <a href="javascript:void(0)" class="btn btn-danger deletebtn">
+                            <i class="fas fa-trash"></i></a>
                     </td>
                 </tr>
                 @endforeach

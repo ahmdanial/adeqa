@@ -61,14 +61,19 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Test:</label>
-                        <select name="testcode" class="form-control" id="testcode">
-                            @foreach($tests as $test)
-                            <option value="{{ $test->testcode }}" {{ $test->testcode == $assignTest->testcode ? 'selected' : '' }}>
-                                {{ $test->testname }}
-                            </option>
-                            @endforeach
-                        </select>
+                        <label for="testcode" class="col-sm-3 col-form-label">Test:</label>
+                        <div class="col-sm-9">
+                            <div class="row">
+                                @foreach($tests as $test)
+                                    <div class="col-sm-3">
+                                        <div class="form-check1">
+                                            <input type="checkbox" class="form-check-input1" name="testcodes[]" value="{{ $test->testcode }}" id="test_{{ $test->testcode }}" {{ in_array($test->testcode, old('testcodes', [])) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="test_{{ $test->testcode }}">{{ $test->testname }}</label>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -95,8 +100,8 @@
 
                 </div>
                 <div class="modal-footer">
-                  <a href="{{ url('assign-test') }}" class="btn btn-primary" data-bs-dismiss="modal">BACK</a>
-                  <button type="submit" class="btn btn-success">UPDATE</button>
+                    <a href="{{ url('assign-tests') }}" class="btn btn-primary">BACK</a>
+                    <button type="submit" class="btn btn-success">UPDATE</button>
                 </form>
               </h4>
             </div>

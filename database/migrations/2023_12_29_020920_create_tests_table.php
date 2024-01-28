@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateTestsTable extends Migration
 {
-    /**
+    /**x
      * Run the migrations.
      *
      * @return void
@@ -14,7 +14,7 @@ class CreateTestsTable extends Migration
     public function up()
     {
         Schema::create('tests', function (Blueprint $table) {
-            $table->string('testcode', 20)->primary();
+            $table->string('testcode', 255)->primary();
             $table->unsignedBigInteger('department_id')->nullable();
             $table->string('testname')->nullable();
             $table->unsignedBigInteger('added_by')->nullable();
@@ -22,7 +22,7 @@ class CreateTestsTable extends Migration
             $table->timestamps();
 
             // Foreign key constraints
-            $table->foreign('department_id')->references('id')->on('departments');
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('restrict');
             $table->foreign('added_by')->references('id')->on('users')->onDelete('set null');
             $table->foreign('update_by')->references('id')->on('users')->onDelete('set null');
         });

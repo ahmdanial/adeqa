@@ -11,14 +11,31 @@ class EntryResult extends Model
 
     protected $table = 'entryresults';
 
+    protected $primaryKey = ['entry_id', 'testcode', 'sampledate'];
+
+    public $incrementing = false;
+
     protected $fillable = [
+        'entry_id',
+        'testcode',
         'sampledate',
         'result',
+        'lab_id',
+        'prog_id',
+        'instrument_id',
+        'reagent_id',
+        'method_id',
+        'unit_id',
         'added_by',
         'update_by',
     ];
 
-     // Relationships
+    // Relationships
+
+    public function assignTest()
+    {
+        return $this->belongsTo(AssignTest::class, 'assign_test_id', 'id');
+    }
 
     public function lab()
     {
@@ -50,18 +67,18 @@ class EntryResult extends Model
         return $this->belongsTo(Unit::class, 'unit_id');
     }
 
-    public function test()
+    public function tests()
     {
-        return $this->belongsTo(Test::class, 'testcode');
+        return $this->belongsToMany(Test::class, 'subassigntest', 'assign_test_id', 'testcode');
     }
 
-     public function addedBy()
+    public function addedBy()
     {
-        return $this->belongsTo(User::class, 'added_by');
+        return $this->belongsTo(User::class, 'added_by', 'id');
     }
 
-    public function updateBy()
+    public function updatedBy()
     {
-        return $this->belongsTo(User::class, 'update_by');
+        return $this->belongsTo(User::class, 'update_by', 'id');
     }
 }

@@ -19,6 +19,11 @@
             {{ csrf_field() }}
 
             <div class="mb-3">
+                <label for="testcode" class="col-form-label">User Code:</label>
+                <input type="text" name="user_code" class="form-control" id="user_code">
+              </div>
+
+            <div class="mb-3">
                 <label for="recipient-name" class="col-form-label">User:</label>
                 <select name="user_id" class="form-control" id="user_id">
                     @foreach($users as $user)
@@ -105,13 +110,12 @@
                 <th class="w-10p">Lab</th>
                 <th class="w-10p">Added By</th>
                 <th class="w-10p">Updated By</th>
-                <th class="w-10p">EDIT</th>
-                <th class="w-10p">DELETE</th>
+                <th class="w-10p" style="text-align: center;">ACTIONS</th>
               </thead>
               <tbody>
                 @foreach ($assignUsers as $data)
                 <tr>
-                  <td>{{ $data->id }}</td>
+                  <td>{{ $data->user_code }}</td>
                   <td>
                     @if ($data->user)
                     {{ $data->user->username}}
@@ -140,14 +144,12 @@
                         N/A
                     @endif
                 </td>
-                  <td>
-                    <a href="{{ url('assign-users/'.$data->id) }}" class="btn btn-success">
-                        <i class="now-ui-icons ui-1_settings-gear-63"></i></a>
-                    </td>
-                  <td>
+                <td style="display: flex; justify-content: center;">
+                    <a href="{{ url('assign-users/'.$data->id)}}" class="btn btn-success">
+                        <i class="fas fa-pen"></i></a>&nbsp;&nbsp;
                     <a href="javascript:void(0)" class="btn btn-danger deletebtn">
-                        <i class="now-ui-icons ui-1_simple-remove"></i></a>
-                    </td>
+                        <i class="fas fa-trash"></i></a>
+                   </td>
                 </tr>
                 @endforeach
               </tbody>

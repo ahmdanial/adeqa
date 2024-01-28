@@ -41,7 +41,7 @@
 
 <body class="">
   <div class="wrapper ">
-    <div class="sidebar" data-color="orange"><!-- Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow" -->
+    <div class="sidebar" data-color="darkblue"><!-- Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow" -->
       <div class="logo">
         <a href="http://www.creative-tim.com" class="simple-text logo-mini">
             AD

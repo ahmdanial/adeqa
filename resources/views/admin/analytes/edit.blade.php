@@ -23,7 +23,7 @@
 
                 </div>
                 <div class="modal-footer">
-                  <a href="{{ url('analytes') }}" class="btn btn-primary" data-bs-dismiss="modal">BACK</a>
+                  <a href="{{ url('analytes') }}" class="btn btn-primary">BACK</a>
                   <button type="submit" class="btn btn-success">UPDATE</button>
                 </form>
               </h4>

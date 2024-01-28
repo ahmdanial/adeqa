@@ -8,82 +8,108 @@
 @section('content')
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title fs-5" id="exampleModalLabel">ASSIGN TEST</h2>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form action="/save-assign-tests" method="POST">
-
-            {{ csrf_field() }}
-
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Lab:</label>
-                <select name="lab_id" class="form-control" id="lab_id">
-                    @foreach($labs as $lab) {{-- Assuming $labs is the collection of labs --}}
-                        <option value="{{ $lab->id }}">{{ $lab->labname }}</option>
-                    @endforeach
-                </select>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-5" id="exampleModalLabel">ASSIGN TEST</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body">
+                <form action="/save-assign-tests" method="POST">
 
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Instrument:</label>
-                <select name="instrument_id" class="form-control" id="instrument_id">
-                    @foreach($instruments as $instrument)
-                        <option value="{{ $instrument->id }}">{{ $instrument->instrumentname }}</option>
-                    @endforeach
-                </select>
-            </div>
+                    {{ csrf_field() }}
 
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Reagent:</label>
-                <select name="reagent_id" class="form-control" id="reagent_id">
-                    @foreach($reagents as $reagent)
-                        <option value="{{ $reagent->id }}">{{ $reagent->reagent }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Test:</label>
-                <select name="testcode" class="form-control" id="testcode">
-                    @foreach($tests as $test)
-                    <div class="form-check1">
-                        <input type="checkbox" class="form-check-input1" name="testcode[]" value="{{ $test->testcode }}" id="test_{{ $test->testcode }}">
-                        <label class="form-check-label" for="test_{{ $test->testcode }}">{{ $test->testname }}</label>
+                    <div class="mb-3 row">
+                        <label for="lab_id" class="col-sm-3 col-form-label">Lab:</label>
+                        <div class="col-sm-9">
+                            <select name="lab_id" class="form-control" id="lab_id">
+                                @foreach($labs as $lab)
+                                <option value="{{ $lab->id }}">{{ $lab->labname }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                @endforeach
-            </div>
 
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Method:</label>
-                <select name="method_id" class="form-control" id="method_id">
-                    @foreach($methods as $method)
-                        <option value="{{ $method->id }}">{{ $method->methodname }}</option>
-                    @endforeach
-                </select>
-            </div>
+                    <div class="mb-3 row">
+                        <label for="prog_id" class="col-sm-3 col-form-label">Program:</label>
+                        <div class="col-sm-9">
+                            <select name="prog_id" class="form-control" id="prog_id">
+                                @foreach($programs as $program)
+                                <option value="{{ $program->id }}">{{ $program->programname }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
 
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Unit:</label>
-                <select name="unit_id" class="form-control" id="unit_id">
-                    @foreach($units as $unit)
-                        <option value="{{ $unit->id }}">{{ $unit->unit }}</option>
-                    @endforeach
-                </select>
-            </div>
+                    <div class="mb-3 row">
+                        <label for="instrument_id" class="col-sm-3 col-form-label">Instrument:</label>
+                        <div class="col-sm-9">
+                            <select name="instrument_id" class="form-control" id="instrument_id">
+                                @foreach($instruments as $instrument)
+                                <option value="{{ $instrument->id }}">{{ $instrument->instrumentname }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
 
+                    <div class="mb-3 row">
+                    <label for="reagent_id" class="col-sm-3 col-form-label">Unit:</label>
+                        <div class="col-sm-9">
+                        <select name="reagent_id" class="form-control" id="reagent_id">
+                            @foreach($reagents as $reagent)
+                                <option value="{{ $reagent->id }}">{{ $reagent->reagent }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="testcode" class="col-sm-3 col-form-label">Test:</label>
+                        <div class="col-sm-9">
+                            <div class="row">
+                                @foreach($tests as $test)
+                                    <div class="col-sm-3">
+                                        <div class="form-check1">
+                                            <input type="checkbox" class="form-check-input1" name="testcodes[]" value="{{ $test->testcode }}" id="test_{{ $test->testcode }}" {{ in_array($test->testcode, old('testcodes', [])) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="test_{{ $test->testcode }}">{{ $test->testname }}</label>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="method_id" class="col-sm-3 col-form-label">Method:</label>
+                        <div class="col-sm-9">
+                        <select name="method_id" class="form-control" id="method_id">
+                            @foreach($methods as $method)
+                                <option value="{{ $method->id }}">{{ $method->methodname }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="unit_id" class="col-sm-3 col-form-label">Unit:</label>
+                        <div class="col-sm-9">
+                            <select name="unit_id" class="form-control" id="unit_id">
+                                @foreach($units as $unit)
+                                <option value="{{ $unit->id }}">{{ $unit->unit }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">CLOSE</button>
+                <button type="submit" class="btn btn-success">SAVE</button>
+            </div>
+            </form>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">CLOSE</button>
-          <button type="submit" class="btn btn-success">SAVE</button>
-        </div>
-        </form>
-      </div>
     </div>
-  </div>
+</div>
 
 {{-- Delete Modal --}}
 <!-- Modal -->
@@ -132,13 +158,17 @@
             {
                 width: 10% !important;
             }
+            .w-1p
+            {
+                width: 1% !important;
+            }
         </style>
 
         <div class="card-body">
           <div class="table-responsive">
             <table id="datatable" class="table">
               <thead class=" text-primary">
-                <th class="w-10p">ID </th>
+                <th class="w-1p">ID </th>
                 <th class="w-10p">Lab</th>
                 <th class="w-10p">Program </th>
                 <th class="w-10p">Instrument </th>
@@ -146,10 +176,9 @@
                 <th class="w-10p">Test </th>
                 <th class="w-10p">Method </th>
                 <th class="w-10p">Unit </th>
-                <th class="w-10p">Added By</th>
-                <th class="w-10p">Updated By</th>
-                <th class="w-10p">EDIT</th>
-                <th class="w-10p">DELETE</th>
+                {{-- <th class="w-10p">Added By</th>
+                <th class="w-10p">Updated By</th> --}}
+                <th class="w-10p" style="text-align: center;">ACTIONS</th>
               </thead>
               <tbody>
                 @foreach ($assignTests as $data)
@@ -189,11 +218,12 @@
                     </td>
 
                     <td>
-                        @if ($data->test)
-                        {{ $data->test->testname}}
-                        @else
-                            No User
-                        @endif
+                        @foreach($data->tests as $test)
+                            {{ $test->testname }}
+                            @if(!$loop->last) {{-- Add line break if not the last item --}}
+                                <br>
+                            @endif
+                        @endforeach
                     </td>
 
                     <td>
@@ -212,7 +242,7 @@
                         @endif
                     </td>
 
-                  <td>
+                  {{--<td>
                     @if ($data->addedBy)
                         {{ $data->addedBy->username }}
                     @else
@@ -226,16 +256,14 @@
                     @else
                         N/A
                     @endif
-                </td>
+                </td>--}}
 
-                  <td>
-                    <a href="{{ url('assign-tests/'.$data->id) }}" class="btn btn-success">
-                        <i class="now-ui-icons ui-1_settings-gear-63"></i></a>
-                    </td>
-                  <td>
+                <td style="display: flex; justify-content: center;">
+                    <a href="{{ url('assign-tests/'.$data->id)}}" class="btn btn-success">
+                        <i class="fas fa-pen"></i></a>&nbsp;&nbsp;
                     <a href="javascript:void(0)" class="btn btn-danger deletebtn">
-                        <i class="now-ui-icons ui-1_simple-remove"></i></a>
-                    </td>
+                        <i class="fas fa-trash"></i></a>
+                </td>
                 </tr>
                 @endforeach
               </tbody>

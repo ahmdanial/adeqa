@@ -81,52 +81,48 @@
             }
         </style>
 
-        <div class="card-body">
-          <div class="table-responsive">
-            <table id="datatable" class="table">
-              <thead class=" text-primary">
-                <th class="w-10p">ID Department</th>
-                <th class="w-10p">Department Name</th>
-                <th class="w-10p">Added By</th>
-                <th class="w-10p">Updated By</th>
-                <th class="w-10p">EDIT</th>
-                <th class="w-10p">DELETE</th>
-              </thead>
-              <tbody>
-                @foreach ($departments as $data)
-                <tr>
-                  <td>{{ $data->id }}</td>
-                  <td>{{ $data->department }}</td>
-                  <td>
-                    @if ($data->addedBy)
-                        {{ $data->addedBy->username }}
-                    @else
-                        N/A
-                    @endif
-                </td>
-                <td>
-                    @if ($data->updateBy)
-                        {{ $data->updateBy->username }}
-                    @else
-                        N/A
-                    @endif
-                </td>
-                  <td>
-                    <a href="{{ url('departments/'.$data->id)}}" class="btn btn-success">
-                        <i class="now-ui-icons ui-1_settings-gear-63"></i></a>
-                    </td>
-                  <td>
-                    <a href="javascript:void(0)" class="btn btn-danger deletebtn">
-                        <i class="now-ui-icons ui-1_simple-remove"></i></a>
-                    </td>
-                </tr>
-                @endforeach
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+<div class="card-body">
+    <div class="table-responsive">
+      <table id="datatable" class="table">
+        <thead class=" text-primary">
+          <th class="w-10p">ID Department</th>
+          <th class="w-10p">Department Name</th>
+          <th class="w-10p">Added By</th>
+          <th class="w-10p">Updated By</th>
+          <th class="w-10p" style="text-align: center;">ACTIONS</th>
+        </thead>
+        <tbody>
+          @foreach ($departments as $data)
+          <tr>
+            <td>{{ $data->id }}</td>
+            <td>{{ $data->department }}</td>
+            <td>
+              @if ($data->addedBy)
+                  {{ $data->addedBy->username }}
+              @else
+                  N/A
+              @endif
+            </td>
+            <td>
+              @if ($data->updateBy)
+                  {{ $data->updateBy->username }}
+              @else
+                  N/A
+              @endif
+            </td>
+            <td style="display: flex; justify-content: center;">
+                <a href="{{ url('departments/'.$data->id)}}" class="btn btn-success">
+                    <i class="fas fa-pen"></i></a>&nbsp;&nbsp;
+                <a href="javascript:void(0)" class="btn btn-danger deletebtn">
+                    <i class="fas fa-trash"></i></a>
+            </td>
+            </tr>
+          </tr>
+          @endforeach
+        </tbody>
+      </table>
     </div>
+  </div>
 
 @endsection
 

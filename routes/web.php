@@ -34,6 +34,7 @@ Route::group(['middleware' => ['superadmin']], function () {
     });
 
     Route::get('user-register', [App\Http\Controllers\Admin\DashboardController::class, 'registered']);
+    Route::post('/save-user-register', [App\Http\Controllers\Admin\DashboardController::class, 'registerstore']);
     Route::get('/user-edit/{id}', [App\Http\Controllers\Admin\DashboardController::class, 'registeredit']);
     Route::put('/user-register-update/{id}', [App\Http\Controllers\Admin\DashboardController::class, 'registerupdate']);
     Route::delete('/user-delete/{id}', [App\Http\Controllers\Admin\DashboardController::class, 'registerdelete']);
@@ -100,9 +101,9 @@ Route::group(['middleware' => ['superadmin']], function () {
 
     Route::get('/assign-users', [AssignUserController::class, 'index'])->name('assign.users');
     Route::post('/save-assign-users', [AssignUserController::class, 'store']);
-    Route::get('/assign-users/{id}', [AssignUserController::class, 'edit']);
-    Route::put('/assign-users-update/{id}', [AssignUserController::class, 'update']);
-    Route::delete('/assign-users-delete/{id}', [AssignUserController::class, 'delete']);
+    Route::get('/assign-users/{user_code}', [AssignUserController::class, 'edit']);
+    Route::put('/assign-users-update/{user_code}', [AssignUserController::class, 'update']);
+    Route::delete('/assign-users-delete/{user_code}', [AssignUserController::class, 'delete']);
 
 });
 
@@ -125,9 +126,9 @@ Route::group(['middleware' => ['user']], function () {
     });
 
     Route::get('entry-results', [DataEntryController::class, 'index']);
-    Route::post('/save-entry-results', [DataEntryController::class, 'store']);
-    Route::get('/entry-results/{id}', [DataEntryController::class, 'edit']);
-    Route::put('/entry-results-update/{id}', [DataEntryController::class, 'update']);
+    Route::get('/get-assign-test-id/{assignTestId}', [DataEntryController::class, 'getAssignTestId'])->name('get.assign.test.id');
+    Route::get('entry-results/show/{assignTestId}', [DataEntryController::class, 'showEntryResults'])->name('entry-results.showEntryResults');
+    Route::put('/entry-results/update', [DataEntryController::class, 'update']);
     Route::delete('/entry-results-delete/{id}', [DataEntryController::class, 'delete']);
 
     Route::get('/receipt/{id}', [DataEntryController::class, 'viewReceipt']);

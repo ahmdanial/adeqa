@@ -38,4 +38,10 @@ class Test extends Model
     {
         return $this->belongsTo(User::class, 'update_by');
     }
+
+    public function assignTests()
+    {
+        return $this->belongsToMany(AssignTest::class, 'subassigntest', 'testcode', 'assign_test_id');
+    }
+
 }

@@ -55,9 +55,14 @@ class AssignTest extends Model
         return $this->belongsTo(Unit::class, 'unit_id');
     }
 
-    public function test()
+    public function tests()
     {
-        return $this->belongsTo(Test::class, 'testcode');
+        return $this->belongsToMany(Test::class, 'subassigntest', 'assign_test_id', 'testcode');
+    }
+
+    public function entryresult()
+    {
+        return $this->hasMany(EntryResult::class, 'entry_id');
     }
 
      public function addedBy()

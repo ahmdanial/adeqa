@@ -39,8 +39,26 @@
                 <input type="text" name="city" class="form-control" id="recipient-name">
               </div>
               <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">State:</label>
-                <input type="text" name="state" class="form-control" id="recipient-name">
+                <label for="state" class="col-form-label">State:</label>
+                <select name="state" id="state" class="form-control">
+                  <option value="">Select a state</option>
+                  <option value="Johor">Johor</option>
+                  <option value="Kedah">Kedah</option>
+                  <option value="Kelantan">Kelantan</option>
+                  <option value="Melaka">Melaka</option>
+                  <option value="Negeri Sembilan">Negeri Sembilan</option>
+                  <option value="Pahang">Pahang</option>
+                  <option value="Perak">Perak</option>
+                  <option value="Perlis">Perlis</option>
+                  <option value="Pulau Pinang">Pulau Pinang</option>
+                  <option value="Sabah">Sabah</option>
+                  <option value="Sarawak">Sarawak</option>
+                  <option value="Selangor">Selangor</option>
+                  <option value="Terengganu">Terengganu</option>
+                  <option value="Kuala Lumpur">Kuala Lumpur</option>
+                  <option value="Labuan">Labuan</option>
+                  <option value="Putrajaya">Putrajaya</option>
+                </select>
               </div>
               <div class="mb-3">
                 <label for="recipient-name" class="col-form-label">Postal Code:</label>
@@ -126,8 +144,7 @@
                 <th class="w-10p">Postal Code</th>
                 <th class="w-10p">Country</th>
                 <th class="w-10p">Contact No</th>
-                <th class="w-10p">EDIT</th>
-                <th class="w-10p">DELETE</th>
+                <th>ACTIONS</th>
               </thead>
               <tbody>
                 @foreach ($labs as $data)
@@ -151,14 +168,11 @@
                   <td>{{ $data->postalcode }}</td>
                   <td>{{ $data->country }}</td>
                   <td>{{ $data->contactno }}</td>
-                  <td>
-                    <a href="{{ url('labs/'.$data->id)}}" class="btn btn-success">
-                        <i class="now-ui-icons ui-1_settings-gear-63"></i></a>
-                    </td>
-                  <td>
-                    <a href="javascript:void(0)" class="btn btn-danger deletebtn">
-                        <i class="now-ui-icons ui-1_simple-remove"></i></a>
-                    </td>
+                  <td style="display: flex;">
+                    <a href="{{ url('labs/'.$data->id)}}" class="btn btn-success" style="margin-top: 8px;">
+                        <i class="fas fa-pen"></i></a>&nbsp;&nbsp;
+                    <a href="javascript:void(0)" class="btn btn-danger deletebtn" style="margin-top: 8px;">
+                        <i class="fas fa-trash"></i></a> </td>
                 </tr>
                 @endforeach
               </tbody>

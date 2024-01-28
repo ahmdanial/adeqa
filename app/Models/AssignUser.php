@@ -10,6 +10,7 @@ class AssignUser extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_code',
         'user_id',
         'lab_id',
         'added_by',

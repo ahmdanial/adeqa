@@ -28,9 +28,9 @@ class CreateLabsTable extends Migration
             $table->timestamps();
 
             // Foreign key constraints
-            $table->foreign('department_id')->references('id')->on('departments');
             $table->foreign('added_by')->references('id')->on('users');
             $table->foreign('update_by')->references('id')->on('users');
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('restrict');
         });
     }
 

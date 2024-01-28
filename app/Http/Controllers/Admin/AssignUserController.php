@@ -24,6 +24,7 @@ class AssignUserController extends Controller
     {
         $assignUser = new AssignUser;
 
+        $assignUser->user_code = $request->input('user_code');
         $assignUser->user_id = $request->input('user_id');
         $assignUser->lab_id = $request->input('lab_id');
         $assignUser->added_by = auth()->user()->id;
@@ -35,19 +36,20 @@ class AssignUserController extends Controller
         return redirect('/assign-users')->with('status', 'User Assigned Successfully');
     }
 
-    public function edit($id)
+    public function edit($user_code)
     {
-        $assignUser = AssignUser::findOrFail($id);
+        $assignUser = AssignUser::findOrFail($user_code);
         $users = User::all();
         $labs = Lab::all();
 
         return view('admin.assign.edit-users', compact('assignUser', 'users', 'labs'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $user_code)
     {
-        $assignUser = AssignUser::findOrFail($id);
+        $assignUser = AssignUser::findOrFail($user_code);
 
+        $assignUser->user_code = $request->input('user_code');
         $assignUser->user_id = $request->input('user_id');
         $assignUser->lab_id = $request->input('lab_id');
         $assignUser->update_by = auth()->user()->id;
@@ -58,10 +60,10 @@ class AssignUserController extends Controller
         return redirect('/assign-users')->with('status', 'Assigned User Updated Successfully');
     }
 
-    public function delete($id)
+    public function delete($user_code)
     {
 
-        $assignUser = AssignUser::findOrFail($id);
+        $assignUser = AssignUser::findOrFail($user_code);
         $assignUser->delete();
 
         Session::flash('statuscode', 'success');
