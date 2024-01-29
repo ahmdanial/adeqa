@@ -59,12 +59,12 @@ class EntryResult extends Model
 
     public function method()
     {
-        return $this->belongsTo(Method::class, 'method_id');
+        return $this->belongsToMany(Method::class, 'subassigntest', 'assign_test_id','method_id');
     }
 
     public function unit()
     {
-        return $this->belongsTo(Unit::class, 'unit_id');
+        return $this->belongsToMany(Unit::class, 'subassigntest', 'assign_test_id','unit_id');
     }
 
     public function tests()

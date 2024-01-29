@@ -17,8 +17,6 @@ class AssignTest extends Model
         'instrument_id',
         'reagent_id',
         'testcode',
-        'method_id',
-        'unit_id',
         'added_by',
         'update_by',
     ];
@@ -43,16 +41,6 @@ class AssignTest extends Model
     public function reagent()
     {
         return $this->belongsTo(Reagent::class, 'reagent_id');
-    }
-
-    public function method()
-    {
-        return $this->belongsTo(Method::class, 'method_id');
-    }
-
-    public function unit()
-    {
-        return $this->belongsTo(Unit::class, 'unit_id');
     }
 
     public function tests()

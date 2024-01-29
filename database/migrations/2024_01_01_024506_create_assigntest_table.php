@@ -20,8 +20,6 @@ class CreateAssigntestTable extends Migration
             $table->unsignedBigInteger('prog_id');
             $table->unsignedBigInteger('instrument_id');
             $table->unsignedBigInteger('reagent_id');
-            $table->unsignedBigInteger('method_id');
-            $table->unsignedBigInteger('unit_id');
             $table->unsignedBigInteger('added_by')->nullable();
             $table->unsignedBigInteger('update_by')->nullable();
             $table->timestamps();
@@ -31,8 +29,6 @@ class CreateAssigntestTable extends Migration
             $table->foreign('prog_id')->references('id')->on('programs')->onDelete('cascade');
             $table->foreign('instrument_id')->references('id')->on('instruments')->onDelete('cascade');
             $table->foreign('reagent_id')->references('id')->on('reagents')->onDelete('cascade');
-            $table->foreign('method_id')->references('id')->on('methods')->onDelete('cascade');
-            $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade');
             $table->foreign('added_by')->references('id')->on('users')->onDelete('set null');
             $table->foreign('update_by')->references('id')->on('users')->onDelete('set null');
         });
