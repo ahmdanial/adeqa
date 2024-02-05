@@ -6,9 +6,6 @@ use App\Models\AssignTest;
 use App\Models\Program;
 use App\Models\Lab;
 use App\Models\Instrument;
-use App\Models\Reagent;
-use App\Models\Method;
-use App\Models\Unit;
 use App\Models\Test;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
@@ -23,9 +20,6 @@ class AssignTestController extends Controller
         $programs = Program::all();
         $labs = Lab::all();
         $instruments = Instrument::all();
-        $reagents = Reagent::all();
-        $methods = Method::all();
-        $units = Unit::all();
         $tests = Test::all();
 
         return view('useradmin.assign-tests', compact('assignTests', 'programs', 'labs', 'instruments', 'reagents', 'methods', 'units', 'tests'));
