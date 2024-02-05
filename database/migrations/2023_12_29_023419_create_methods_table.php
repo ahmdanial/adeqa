@@ -16,11 +16,14 @@ class CreateMethodsTable extends Migration
         Schema::create('methods', function (Blueprint $table) {
             $table->id(); // Auto-incrementing primary key
             $table->unsignedBigInteger('reagent_id');
-            $table->string('testcode', 20);
+            $table->string('testcode', 255);
             $table->string('methodname')->nullable();
+            $table->unsignedBigInteger('unit_id');
             $table->unsignedBigInteger('added_by')->nullable();
             $table->unsignedBigInteger('update_by')->nullable();
             $table->timestamps();
+
+             $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade');
 
              // Foreign key relationship with the 'reagents' table
              $table->foreign('reagent_id')->references('id')->on('reagents');

@@ -126,11 +126,18 @@ Route::group(['middleware' => ['user']], function () {
     });
 
     Route::get('entry-results', [DataEntryController::class, 'index']);
-    Route::get('/get-assign-test-id/{assignTestId}', [DataEntryController::class, 'getAssignTestId'])->name('get.assign.test.id');
-    Route::get('entry-results/show/{assignTestId}', [DataEntryController::class, 'showEntryResults'])->name('entry-results.showEntryResults');
+    Route::get('/get-assign-test-id/{assignTestId}', [DataEntryController::class, 'getAssignTestId'])->name('entry-results.getAssignTestId');
+    Route::get('/entry-results/{assignTestId}', [DataEntryController::class, 'showEntryResults'])->name('entry-results.showEntryResults');
     Route::put('/entry-results/update', [DataEntryController::class, 'update']);
     Route::delete('/entry-results-delete/{id}', [DataEntryController::class, 'delete']);
 
     Route::get('/receipt/{id}', [DataEntryController::class, 'viewReceipt']);
     Route::get('/receipt/{id}/generate', [DataEntryController::class, 'generateReceipt']);
+
+    // New route for storing entry results
+    Route::post('/entry-results/{assignTestId}/store', [DataEntryController::class, 'store'])
+        ->name('entry-results.store');
+
+    // New route for fetching method details
+    Route::get('result/{assignTestId}', [DataEntryController::class, 'result'])->name('result');
 });

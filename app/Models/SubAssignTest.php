@@ -20,12 +20,17 @@ class SubAssignTest extends Model
 
     public function assignTest()
     {
-        return $this->belongsTo(AssignTest::class, 'assign_test_id');
+        return $this->belongsTo(AssignTest::class);
     }
 
     public function method()
     {
-        return $this->belongsTo(Method::class, 'method_id');
+        return $this->belongsTo(Method::class, 'testcode', 'testcode');
+    }
+
+    public function test()
+    {
+        return $this->belongsTo(Test::class, 'testcode');
     }
 
     public function unit()

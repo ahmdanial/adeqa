@@ -53,22 +53,11 @@
                     </div>
 
                     <div class="mb-3 row">
-                    <label for="reagent_id" class="col-sm-3 col-form-label">Unit:</label>
-                        <div class="col-sm-9">
-                        <select name="reagent_id" class="form-control" id="reagent_id">
-                            @foreach($reagents as $reagent)
-                                <option value="{{ $reagent->id }}">{{ $reagent->reagent }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    </div>
-
-                    <div class="mb-3 row">
                         <label for="testcode" class="col-sm-3 col-form-label">Test:</label>
                         <div class="col-sm-9">
                             <div class="row">
                                 @foreach($tests as $test)
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-6">
                                         <div class="form-check1">
                                             <input type="checkbox" class="form-check-input1" name="testcodes[]" value="{{ $test->testcode }}" id="test_{{ $test->testcode }}" {{ in_array($test->testcode, old('testcodes', [])) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="test_{{ $test->testcode }}">{{ $test->testname }}</label>
@@ -76,28 +65,6 @@
                                     </div>
                                 @endforeach
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="mb-3 row">
-                        <label for="method_id" class="col-sm-3 col-form-label">Method:</label>
-                        <div class="col-sm-9">
-                        <select name="method_id" class="form-control" id="method_id">
-                            @foreach($methods as $method)
-                                <option value="{{ $method->id }}">{{ $method->methodname }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    </div>
-
-                    <div class="mb-3 row">
-                        <label for="unit_id" class="col-sm-3 col-form-label">Unit:</label>
-                        <div class="col-sm-9">
-                            <select name="unit_id" class="form-control" id="unit_id">
-                                @foreach($units as $unit)
-                                <option value="{{ $unit->id }}">{{ $unit->unit }}</option>
-                                @endforeach
-                            </select>
                         </div>
                     </div>
 
@@ -172,10 +139,8 @@
                 <th class="w-10p">Lab</th>
                 <th class="w-10p">Program </th>
                 <th class="w-10p">Instrument </th>
-                <th class="w-10p">Reagent </th>
                 <th class="w-10p">Test </th>
-                <th class="w-10p">Method </th>
-                <th class="w-10p">Unit </th>
+
                 {{-- <th class="w-10p">Added By</th>
                 <th class="w-10p">Updated By</th> --}}
                 <th class="w-10p" style="text-align: center;">ACTIONS</th>
@@ -210,36 +175,12 @@
                     </td>
 
                     <td>
-                        @if ($data->reagent)
-                        {{ $data->reagent->reagent}}
-                        @else
-                            No User
-                        @endif
-                    </td>
-
-                    <td>
                         @foreach($data->tests as $test)
                             {{ $test->testname }}
                             @if(!$loop->last) {{-- Add line break if not the last item --}}
                                 <br>
                             @endif
                         @endforeach
-                    </td>
-
-                    <td>
-                        @if ($data->method)
-                        {{ $data->method->methodname}}
-                        @else
-                            No User
-                        @endif
-                    </td>
-
-                    <td>
-                        @if ($data->unit)
-                        {{ $data->unit->unit}}
-                        @else
-                            No User
-                        @endif
                     </td>
 
                   {{--<td>

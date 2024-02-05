@@ -12,6 +12,7 @@ class Method extends Model
         'reagent_id',
         'testcode',
         'methodname',
+        'unit_id',
         'added_by',
         'update_by',
     ];
@@ -27,14 +28,23 @@ class Method extends Model
      {
          return $this->belongsTo(Test::class, 'testcode', 'testcode');
      }
+     public function unit()
+        {
+            return $this->belongsTo(Unit::class, 'unit_id');
+        }
+
+    public function subassigntest()
+        {
+            return $this->hasOne(Subassigntest::class, 'testcode', 'testcode');
+        }
 
      public function addedBy()
-    {
-        return $this->belongsTo(User::class, 'added_by');
-    }
+        {
+            return $this->belongsTo(User::class, 'added_by');
+        }
 
     public function updateBy()
-    {
-        return $this->belongsTo(User::class, 'update_by');
-    }
+        {
+            return $this->belongsTo(User::class, 'update_by');
+        }
 }

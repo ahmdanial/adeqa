@@ -43,6 +43,17 @@
                         </select>
                     </div>
 
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Reagent:</label>
+                        <select name="unit_id" class="form-control" id="unit_id">
+                            @foreach($units as $unit)
+                                <option value="{{ $unit->id }}" {{ $unit->id == $method->unit_id ? 'selected' : '' }}>
+                                    {{ $unit->unit }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                   <a href="{{ url('methods') }}" class="btn btn-primary">BACK</a>

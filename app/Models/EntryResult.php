@@ -11,7 +11,7 @@ class EntryResult extends Model
 
     protected $table = 'entryresults';
 
-    protected $primaryKey = ['entry_id', 'testcode', 'sampledate'];
+    protected $primaryKey = ['testcode', 'sampledate'];
 
     public $incrementing = false;
 

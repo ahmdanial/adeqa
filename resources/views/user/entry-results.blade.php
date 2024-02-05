@@ -53,37 +53,17 @@
 
                     <div class="mb-3">
                         <label for="reagent_id" class="col-form-label">Reagent:</label>
-                        <select name="reagent_id" class="form-control" id="reagent_id">
-                            @foreach ($assignTests as $assignTest)
-                                @if ($assignTest->reagent)
-                                    <option value="{{ $assignTest->reagent->id }}">
-                                        {{ $assignTest->reagent->reagent }}</option>
-                                @endif
+                        <select name="reagent_id" class="form-control" id="reagent_id" onchange="fetchAssignTestId()">
+                            @if (isset($reagentId))
+                                <option value="{{ $reagentId }}">{{ $reagentId }}</option>
+                            @endif
+                            @foreach ($reagents as $reagent)
+                                <option value="{{ $reagent->id }}">{{ $reagent->reagent }}</option>
                             @endforeach
                         </select>
                     </div>
 
-                    <!-- Listing table for results (initially hidden) -->
-                    <table class="table" id="listingTable" style="display: none;">
-                        <thead>
-                            <tr>
-                                <th>Test Code</th>
-                                <th>Result</th>
-                                <th>Unit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($entryResults as $test)
-                                <tr>
-                                    <td>{{ $test->testcode }}</td>
-                                    <td>
-                                        <input type="text" name="results[{{ $test->testcode }}]" class="form-control">
-                                    </td>
-                                    <td>{{ $test->unit }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <input type="hidden" name="assignTestId" value="{{ $assignTestId }}">
 
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success">ENTER</button>
@@ -96,17 +76,8 @@
 
 <script>
     function fetchAssignTestId() {
-        const assignTestId = {{ $assignTestId }}; // Pass the assignTestId from the controller
-
-        // Perform an AJAX request to fetch lab_id based on assignTestId
-        fetch(`/get-assign-test-id/${assignTestId}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.assignTestId) {
-                    window.location.href = `/entry-results/${data.assignTestId}`;
-                }
-            })
-            .catch(error => console.error('Error:', error));
+        const form = document.getElementById('entryResultsForm');
+        form.submit();
     }
 </script>
 

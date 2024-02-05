@@ -22,7 +22,7 @@ class AssignTestController extends Controller
         $instruments = Instrument::all();
         $tests = Test::all();
 
-        return view('useradmin.assign-tests', compact('assignTests', 'programs', 'labs', 'instruments', 'reagents', 'methods', 'units', 'tests'));
+        return view('useradmin.assign-tests', compact('assignTests', 'programs', 'labs', 'instruments', 'tests'));
     }
 
     // ...
@@ -33,9 +33,6 @@ class AssignTestController extends Controller
             'lab_id' => 'required',
             'prog_id' => 'required',
             'instrument_id' => 'required',
-            'reagent_id' => 'required',
-            'method_id' => 'required',
-            'unit_id' => 'required',
             'testcodes' => 'required|array', // Update this to 'testcodes' instead of 'testcode'
             'testcodes.*' => 'exists:tests,testcode',
         ]);
@@ -45,9 +42,6 @@ class AssignTestController extends Controller
         $assignTest->lab_id = $request->input('lab_id');
         $assignTest->prog_id = $request->input('prog_id');
         $assignTest->instrument_id = $request->input('instrument_id');
-        $assignTest->reagent_id = $request->input('reagent_id');
-        $assignTest->method_id = $request->input('method_id');
-        $assignTest->unit_id = $request->input('unit_id');
         $assignTest->added_by = auth()->user()->id;
         $assignTest->update_by = auth()->user()->id;
 
@@ -80,12 +74,9 @@ class AssignTestController extends Controller
         $programs = Program::all();
         $labs = Lab::all();
         $instruments = Instrument::all();
-        $reagents = Reagent::all();
-        $methods = Method::all();
-        $units = Unit::all();
         $tests = Test::all();
 
-        return view('useradmin.assign.edit-tests', compact('assignTest', 'programs', 'labs', 'instruments', 'reagents', 'methods', 'units', 'tests'));
+        return view('useradmin.assign.edit-tests', compact('assignTest', 'programs', 'labs', 'instruments', 'tests'));
     }
 
     public function update(Request $request, $id)
@@ -95,11 +86,8 @@ class AssignTestController extends Controller
     $assignTest->lab_id = $request->input('lab_id');
     $assignTest->prog_id = $request->input('prog_id');
     $assignTest->instrument_id = $request->input('instrument_id');
-    $assignTest->reagent_id = $request->input('reagent_id');
     // Remove the following line, as 'testcode' is not a direct property of AssignTest
     // $assignTest->testcode = $request->input('testcode');
-    $assignTest->method_id = $request->input('method_id');
-    $assignTest->unit_id = $request->input('unit_id');
     $assignTest->update_by = auth()->user()->id;
 
     // Save the main record

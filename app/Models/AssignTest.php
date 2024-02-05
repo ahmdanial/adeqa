@@ -15,7 +15,6 @@ class AssignTest extends Model
         'lab_id',
         'prog_id',
         'instrument_id',
-        'reagent_id',
         'testcode',
         'added_by',
         'update_by',
@@ -38,14 +37,14 @@ class AssignTest extends Model
         return $this->belongsTo(Instrument::class, 'instrument_id');
     }
 
-    public function reagent()
-    {
-        return $this->belongsTo(Reagent::class, 'reagent_id');
-    }
-
     public function tests()
     {
         return $this->belongsToMany(Test::class, 'subassigntest', 'assign_test_id', 'testcode');
+    }
+
+    public function subAssignTests()
+    {
+        return $this->hasMany(SubAssignTest::class);
     }
 
     public function entryresult()

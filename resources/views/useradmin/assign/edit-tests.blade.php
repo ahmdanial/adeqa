@@ -50,17 +50,6 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Reagent:</label>
-                        <select name="reagent_id" class="form-control" id="reagent_id">
-                            @foreach($reagents as $reagent)
-                            <option value="{{ $reagent->id }}" {{ $reagent->id == $assignTest->reagent_id ? 'selected' : '' }}>
-                                {{ $reagent->reagent }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
                         <label for="testcode" class="col-sm-3 col-form-label">Test:</label>
                         <div class="col-sm-9">
                             <div class="row">
@@ -74,28 +63,6 @@
                                 @endforeach
                             </div>
                         </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Method:</label>
-                        <select name="method_id" class="form-control" id="method_id">
-                            @foreach($methods as $method)
-                            <option value="{{ $method->id }}" {{ $method->id == $assignTest->method_id ? 'selected' : '' }}>
-                                {{ $method->methodname }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Unit:</label>
-                        <select name="unit_id" class="form-control" id="unit_id">
-                            @foreach($units as $unit)
-                            <option value="{{ $unit->id }}" {{ $unit->id == $assignTest->unit_id ? 'selected' : '' }}>
-                                {{ $unit->unit }}
-                            </option>
-                            @endforeach
-                        </select>
                     </div>
 
                 </div>

@@ -5,38 +5,75 @@ namespace App\Http\Controllers\user;
 use App\Models\EntryResult;
 use App\Models\AssignTest;
 use App\Models\SubAssignTest;
+use App\Models\Method;
+use App\Models\Reagent;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class DataEntryController extends Controller
 {
+    public function getMethodDetails($testCode)
+    {
+
+        $methodDetails = DB::table('methods')
+            ->select('methods.methodname', 'units.unit', 'reagents.reagent')
+            ->join('units', 'methods.unit_id', '=', 'units.id')
+            ->join('reagents', 'methods.reagent_id', '=', 'reagents.id')
+            ->where('methods.testcode', $testCode)
+            ->first();
+
+        // Fetch all reagents related to the test code
+        $reagents = DB::table('methods')
+            ->select('reagents.id', 'reagents.reagent')
+            ->join('reagents', 'methods.reagent_id', '=', 'reagents.id')
+            ->where('methods.testcode', $testCode)
+            ->distinct()
+            ->get();
+
+        return response()->json(['methodDetails' => $methodDetails, 'reagents' => $reagents]);
+    }
+
     public function index()
     {
         $entryResults = EntryResult::all();
         $assignTests = AssignTest::all();
         $assignTestId = $assignTests->first()->id ?? null; // Get the first assignTestId
-
-        return view('user.entry-results', compact('entryResults', 'assignTests', 'assignTestId'));
+        $methodDetails = Method::find($assignTestId);
+        $reagents = Reagent::all();
+        return view('user.entry-results', compact('entryResults', 'assignTests', 'assignTestId', 'methodDetails', 'reagents'));
     }
 
     public function getAssignTestId(Request $request)
     {
-        $labId = $request->lab_id;
-        $progId = $request->prog_id;
-        $instrumentId = $request->instrument_id;
-        $reagentId = $request->reagent_id;
+        $labId = $request->input('lab_id');
+        $progId = $request->input('prog_id');
+        $instrumentId = $request->input('instrument_id');
+        $reagentId = $request->input('reagent_id');
 
-        // Fetch assign_test_id based on the provided parameters
-        $assignTestId = AssignTest::where('lab_id', $labId)
-            ->where('prog_id', $progId)
-            ->where('instrument_id', $instrumentId)
-            ->where('reagent_id', $reagentId)
-            ->value('id');
+        // Now, filter the Subassigntest based on lab_id, prog_id, instrument_id, and reagent_id
+        $subAssignTest = SubAssignTest::whereHas('assignTest', function ($query) use ($labId, $progId, $instrumentId, $reagentId) {
+            $query->where([
+                'lab_id' => $labId,
+                'prog_id' => $progId,
+                'instrument_id' => $instrumentId,
+                'reagent_id' => $reagentId,
+            ]);
+        })
+        ->first();
 
-        return response()->json(['assignTestId' => $assignTestId]);
+        if ($subAssignTest) {
+            $assignTestId = $subAssignTest->assign_test_id;
+
+            // Redirect to the page showing the listing of testcodes
+            return redirect()->route('entry-results.showEntryResults', ['assignTestId' => $assignTestId, 'reagentId' => $reagentId]);
+        } else {
+            // Handle error, maybe redirect back with an error message
+            return redirect()->back()->with('error', 'AssignTestId not found for the given parameters.');
+        }
     }
 
     public function showEntryResults($assignTestId)
@@ -53,6 +90,22 @@ class DataEntryController extends Controller
         // Fetch subAssignTests based on testCodes
         $subAssignTests = SubAssignTest::whereIn('testcode', $testCodes)->get();
 
+        // Fetch the methodDetails based on the assignTest
+        $methodDetails = [];
+        foreach ($subAssignTests as $subAssignTest) {
+            $methodDetails[$subAssignTest->testcode] = Method::where('testcode', $subAssignTest->testcode)->first();
+        }
+
+        // Fetch reagent details using the query
+        $reagentDetails = DB::table('methods as A')
+            ->select('A.reagent_id', 'B.reagent')
+            ->join('reagents as B', 'A.reagent_id', '=', 'B.id')
+            ->whereIn('A.testcode', $testCodes) // Filter by testCodes
+            ->get();
+
+        // Extract unique reagent IDs if needed
+        $reagentId = $reagentDetails->pluck('reagent_id')->unique()->toArray();
+
         // Pass data to the view
         return view('user.show', [
             'assignTest' => $assignTest,
@@ -62,9 +115,56 @@ class DataEntryController extends Controller
             'lab_id' => $assignTest->lab_id,
             'prog_id' => $assignTest->prog_id,
             'instrument_id' => $assignTest->instrument_id,
-            'reagent_id' => $assignTest->reagent_id,
             'assignTestId' => $assignTestId, // Pass the assignTestId variable
+            'methodDetails' => $methodDetails,
+            'reagentDetails' => $reagentDetails,
+            'reagentId' => $reagentId,
         ]);
+    }
+
+    public function getName($assignTestId) {
+        $assignTest = AssignTest::find($assignTestId);
+        
+    }
+
+    public function store(Request $request, $assignTestId)
+    {
+        // Validate the form data
+        $request->validate([
+            'sampledate' => 'required|date',
+            'results' => 'required|array',
+            'results.*' => 'numeric', // Add any additional validation rules for results if needed
+        ]);
+
+        // Loop through the submitted results and store them in the entryresults table
+        foreach ($request->input('results') as $testcode => $result) {
+            EntryResult::create([
+                'entry_id' => $assignTestId,
+                'sampledate' => $request->input('sampledate'),
+                'testcode' => $testcode,
+                'result' => $result,
+                'added_by' => auth()->user()->id,
+                'update_by' => auth()->user()->id,
+            ]);
+        }
+
+        // You may add additional logic or redirect the user to a different page after storing the data
+        Session::flash('statuscode', 'success');
+        return redirect()->route('result', ['assignTestId' => $assignTestId])->with('status', 'Entry Result Successfully');
+    }
+
+    public function result(Request $request, $assignTestId)
+    {
+        $assignTests = AssignTest::where('entry_id', $assignTestId)
+            ->where('added_by', auth()->user()->id)
+            ->with('test', 'method', 'unit', 'reagent')
+            ->get();
+
+        $entryResult = EntryResult::where('entry_id', $assignTestId)
+            ->where('added_by', auth()->user()->id)
+            ->firstOrFail();
+
+        return view('user.result', compact('assignTests', 'entryResult'));
     }
 
     public function update(Request $request, $assignTestId)

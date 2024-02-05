@@ -24,10 +24,10 @@
             </div>
 
             <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Test Code:</label>
+                <label for="recipient-name" class="col-form-label">Test:</label>
                 <select name="testcode" class="form-control" id="testcode">
                     @foreach($tests as $test)
-                        <option value="{{ $test->testcode }}">{{ $test->testcode }}</option>
+                        <option value="{{ $test->testcode }}">{{ $test->testname }}</option>
                     @endforeach
                 </select>
             </div>
@@ -40,6 +40,16 @@
                     @endforeach
                 </select>
             </div>
+
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Unit:</label>
+                <select name="unit_id" class="form-control" id="unit_id">
+                    @foreach($units as $unit)
+                        <option value="{{ $unit->id }}">{{ $unit->unit }}</option>
+                    @endforeach
+                </select>
+            </div>
+
 
         </div>
         <div class="modal-footer">
@@ -108,6 +118,7 @@
                 <th class="w-10p">Method Name</th>
                 <th class="w-10p">Tests</th>
                 <th class="w-10p">Reagent</th>
+                <th class="w-10p">Unit</th>
                 <th class="w-10p">Added By</th>
                 <th class="w-10p">Updated By</th>
                 <th class="w-10p" style="text-align: center;">ACTIONS</th>
@@ -132,7 +143,16 @@
                         No Reagent
                     @endif
                 </td>
-                  <td>
+
+                <td>
+                    @if ($data->unit)
+                        {{ $data->unit->unit}}
+                    @else
+                        No Unit
+                    @endif
+                </td>
+
+                <td>
                     @if ($data->addedBy)
                         {{ $data->addedBy->username }}
                     @else

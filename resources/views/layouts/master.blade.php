@@ -105,7 +105,7 @@
                 </ul>
             </li>
 
-            <li class="{{ Str::startsWith(request()->path(), 'assign-' . $item) ? 'active dropdown' : '' }}">
+            {{--<li class="{{ Str::startsWith(request()->path(), 'assign-' . $item) ? 'active dropdown' : '' }}">
               <a href="#" data-toggle="collapse" data-target="#assignDropdown">
                   <i class="now-ui-icons loader_gear"></i>
                   <p>Assign</p>
@@ -121,7 +121,7 @@
                   @endforeach
               </ul>
 
-          </li>
+          </li>--}}
 
 
         </ul>

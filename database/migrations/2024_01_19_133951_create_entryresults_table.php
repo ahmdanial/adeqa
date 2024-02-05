@@ -16,8 +16,6 @@ class CreateEntryresultsTable extends Migration
         Schema::create('entryresults', function (Blueprint $table) {
             $table->unsignedBigInteger('entry_id');
             $table->string('testcode', 255);
-            $table->unsignedBigInteger('method_id');
-            $table->unsignedBigInteger('unit_id');
             $table->date('sampledate');
             $table->float('result')->nullable();
 

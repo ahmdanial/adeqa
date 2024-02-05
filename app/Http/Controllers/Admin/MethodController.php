@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Reagent;
 use App\Models\Test;
+use App\Models\Unit;
 use App\Models\Method;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
@@ -16,7 +17,8 @@ class MethodController extends Controller
         $method = Method::all();
         $reagent = Reagent::all();
         $tests = Test::all();
-        return view('admin.methods', compact('method', 'reagent', 'tests'));
+        $units = Unit::all();
+        return view('admin.methods', compact('method', 'reagent', 'tests', 'units'));
     }
 
     public function store(Request $request)
@@ -26,6 +28,7 @@ class MethodController extends Controller
         $method->methodname = $request->input('methodname');
         $method->reagent_id = $request->input('reagent_id');
         $method->testcode = $request->input('testcode');
+        $method->unit_id = $request->input('unit_id');
         $method->added_by = auth()->user()->id;
         $method->update_by = auth()->user()->id;
 
@@ -40,8 +43,9 @@ class MethodController extends Controller
         $method = Method::findOrFail($id);
         $reagent = Reagent::all();
         $tests = Test::all();
+        $units = Unit::all();
 
-        return view('admin.methods.edit', compact('method', 'reagent', 'tests'));
+        return view('admin.methods.edit', compact('method', 'reagent', 'tests', 'units'));
     }
 
     public function update(Request $request, $id)
@@ -51,6 +55,8 @@ class MethodController extends Controller
         $method->methodname = $request->input('methodname');
         $method->reagent_id = $request->input('reagent_id');
         $method->testcode = $request->input('testcode');
+        $method->unit_id = $request->input('unit_id');
+
         $method->update_by = auth()->user()->id;
         $method->update();
 

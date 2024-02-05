@@ -12,8 +12,7 @@
                 <h4 class="card-title">DATA ENTRY</h4>
                 <br>
 
-                <form action="{{ route('entry-results.showEntryResults', ['assignTestId' => $assignTestId]) }}" method="POST">
-                    @method('PUT')
+                <form action="{{ route('entry-results.store', ['assignTestId' => $assignTestId]) }}" method="POST">
                     @csrf
 
                     <style>
@@ -27,54 +26,38 @@
                             display: inline-block;
                             margin-right: 50px;
                         }
+
+                        .input-smaller {
+                            width: 15%;
+                        }
+
+                        .align-right {
+                            margin-left: -26px;
+                        }
                     </style>
 
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <span class="label-style" for="lab_id">LAB :</span>
-                                <span class="value-style">
-                                    @foreach ($assignTests as $assignTest)
-                                        @if ($assignTest->lab)
-                                            {{ $assignTest->lab->labname }}
-                                        @endif
-                                    @endforeach
-                                </span>
+                                <span class="value-style" id="selectedLab"></span>
                             </div>
 
                             <div class="mb-3">
                                 <span class="label-style" for="instrument_id">INSTRUMENT :</span>
-                                <span class="value-style">
-                                    @foreach ($assignTests as $assignTest)
-                                        @if ($assignTest->instrument)
-                                            {{ $assignTest->instrument->instrumentname }}
-                                        @endif
-                                    @endforeach
-                                </span>
+                                <span class="value-style" id="selectedInstrument"></span>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <span class="label-style" for="prog_id">PROGRAM :</span>
-                                <span class="value-style">
-                                    @foreach ($assignTests as $assignTest)
-                                        @if ($assignTest->program)
-                                            {{ $assignTest->program->programname }}
-                                        @endif
-                                    @endforeach
-                                </span>
+                                <span class="value-style" id="selectedProg"></span>
                             </div>
 
                             <div class="mb-3">
                                 <span class="label-style" for="reagent_id">REAGENT :</span>
-                                <span class="value-style">
-                                    @foreach ($assignTests as $assignTest)
-                                        @if ($assignTest->reagent)
-                                            {{ $assignTest->reagent->reagent }}
-                                        @endif
-                                    @endforeach
-                                </span>
+                                <span class="value-style" id="selectedReagent"></span>
                             </div>
                         </div>
                     </div>
@@ -86,7 +69,7 @@
                             width: 10% !important;
                         }
                     </style>
-                    <table class="table">
+                    <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th class="w-10p">Test Code</th>
@@ -96,17 +79,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($subAssignTests as $subAssignTest)
-                            <?php $assignTest = $subAssignTest->assignTest; ?>
-                            <tr>
-                                <td>{{ $subAssignTest->testcode }}</td>
-                                <td>{{ $assignTest->method->methodname }}</td>
-                                <td>
-                                    <input type="text" name="results[{{ $subAssignTest->testcode }}]" class="form-control">
-                                </td>
-                                <td>{{ $assignTest->unit->unit }}</td>
-                            </tr>
-                        @endforeach
+                            @foreach($subAssignTests->where('reagent_id', $reagentId) as $subAssignTest)
+                                <?php $assignTest = $subAssignTest->assignTest; ?>
+                                <tr>
+                                    <td>{{ $subAssignTest->testcode }}</td>
+                                    @if (isset($methodDetails[$subAssignTest->testcode]))
+                                        <td>{{ $methodDetails[$subAssignTest->testcode]->methodname }}</td>
+                                    @endif
+                                    <td>
+                                        <input type="text" name="results[{{ $subAssignTest->testcode }}]" class="form-control">
+                                    </td>
+                                    <td>{{ $methodDetails[$subAssignTest->testcode] ? $methodDetails[$subAssignTest->testcode]->unit->unit : '' }}</td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
 
@@ -118,5 +103,26 @@
         </div>
     </div>
 </div>
+    <script>
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
 
+        // Get values from URL parameters
+        const labId = getUrlParameter('lab_id');
+        const progId = getUrlParameter('prog_id');
+        const instrumentId = getUrlParameter('instrument_id');
+        const reagentId = getUrlParameter('reagent_id');
+        const assignTestId = getUrlParameter('assignTestId');
+
+        // Display the selected values
+        document.getElementById('selectedLab').innerText = labId || 'N/A';
+        document.getElementById('selectedInstrument').innerText = instrumentId || 'N/A';
+        document.getElementById('selectedProg').innerText = progId || 'N/A';
+        document.getElementById('selectedReagent').innerText = reagentId || 'N/A';
+
+        console.log('AssignTestID', assignTestId)
+
+    </script>
 @endsection

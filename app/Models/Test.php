@@ -44,4 +44,9 @@ class Test extends Model
         return $this->belongsToMany(AssignTest::class, 'subassigntest', 'testcode', 'assign_test_id');
     }
 
+    public function subAssignTests()
+    {
+        return $this->hasMany(SubAssignTest::class);
+    }
+
 }
