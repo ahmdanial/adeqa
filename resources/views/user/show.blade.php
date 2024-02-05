@@ -69,7 +69,7 @@
                             width: 10% !important;
                         }
                     </style>
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="getTestCode">
                         <thead>
                             <tr>
                                 <th class="w-10p">Test Code</th>
@@ -79,17 +79,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($subAssignTests->where('reagent_id', $reagentId) as $subAssignTest)
-                                <?php $assignTest = $subAssignTest->assignTest; ?>
+                            @foreach($testCodes as $testcode)
+                                <?php $subAssignTest = $subAssignTests->where('testcode', $testcode)->first(); ?>
                                 <tr>
                                     <td>{{ $subAssignTest->testcode }}</td>
-                                    @if (isset($methodDetails[$subAssignTest->testcode]))
+                                    @if (isset($methodDetails[$subAssignTest->testcode]->method))
                                         <td>{{ $methodDetails[$subAssignTest->testcode]->methodname }}</td>
                                     @endif
                                     <td>
                                         <input type="text" name="results[{{ $subAssignTest->testcode }}]" class="form-control">
                                     </td>
-                                    <td>{{ $methodDetails[$subAssignTest->testcode] ? $methodDetails[$subAssignTest->testcode]->unit->unit : '' }}</td>
+                                    @if (isset($methodDetails[$subAssignTest->testcode]->method))
+                                        <td>{{ $methodDetails[$subAssignTest->testcode]->unit }}</td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>
@@ -103,26 +105,53 @@
         </div>
     </div>
 </div>
-    <script>
-        function getUrlParameter(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
+<script>
+    function getUrlParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    // Get values from URL parameters
+    const labId = getUrlParameter('lab_id');
+    const progId = getUrlParameter('prog_id');
+    const instrumentId = getUrlParameter('instrument_id');
+    const reagentId = getUrlParameter('reagent_id');
+    const assignTestId = getUrlParameter('assignTestId');
+
+    // Display the selected values
+    document.getElementById('selectedLab').innerText = labId || 'N/A';
+    document.getElementById('selectedInstrument').innerText = instrumentId || 'N/A';
+    document.getElementById('selectedProg').innerText = progId || 'N/A';
+    document.getElementById('selectedReagent').innerText = reagentId || 'N/A';
+
+    console.log('AssignTestID', assignTestId);
+    console.log('labId:', labId);
+    console.log('progId:', progId);
+    console.log('instrumentId:', instrumentId);
+    console.log('reagentId:', reagentId);
+
+    // Filter the table based on dynamic parameters
+    const tableRows = document.querySelectorAll('#getTestCode tbody tr');
+
+    tableRows.forEach(row => {
+        const rowLabId = row.getAttribute('data-lab-id');
+        const rowProgId = row.getAttribute('data-prog-id');
+        const rowInstrumentId = row.getAttribute('data-instrument-id');
+        const rowReagentId = row.getAttribute('data-reagent-id');
+        const testcode = row.cells[0].innerText;
+
+        // You might need to adjust the conditions based on your data structure
+        if ((labId === 'N/A' || rowLabId === labId) &&
+            (progId === 'N/A' || rowProgId === progId) &&
+            (instrumentId === 'N/A' || rowInstrumentId === instrumentId) &&
+            (reagentId === 'N/A' || rowReagentId === reagentId) &&
+            (assignTestId === 'N/A' || testcode === assignTestId)) {
+            // Show the row
+            row.style.display = '';
+        } else {
+            // Hide the row
+            row.style.display = 'none';
         }
-
-        // Get values from URL parameters
-        const labId = getUrlParameter('lab_id');
-        const progId = getUrlParameter('prog_id');
-        const instrumentId = getUrlParameter('instrument_id');
-        const reagentId = getUrlParameter('reagent_id');
-        const assignTestId = getUrlParameter('assignTestId');
-
-        // Display the selected values
-        document.getElementById('selectedLab').innerText = labId || 'N/A';
-        document.getElementById('selectedInstrument').innerText = instrumentId || 'N/A';
-        document.getElementById('selectedProg').innerText = progId || 'N/A';
-        document.getElementById('selectedReagent').innerText = reagentId || 'N/A';
-
-        console.log('AssignTestID', assignTestId)
-
-    </script>
+    });
+</script>
 @endsection

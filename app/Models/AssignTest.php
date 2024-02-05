@@ -16,6 +16,7 @@ class AssignTest extends Model
         'prog_id',
         'instrument_id',
         'testcode',
+        'reagent_id',
         'added_by',
         'update_by',
     ];
@@ -44,12 +45,17 @@ class AssignTest extends Model
 
     public function subAssignTests()
     {
-        return $this->hasMany(SubAssignTest::class);
+        return $this->hasMany(SubAssignTest::class, 'assign_test_id');
     }
 
     public function entryresult()
     {
         return $this->hasMany(EntryResult::class, 'entry_id');
+    }
+
+    public function reagent()
+    {
+        return $this->belongsTo(Method::class, 'reagent_id');
     }
 
      public function addedBy()

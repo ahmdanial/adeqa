@@ -6,7 +6,7 @@ use App\Models\EntryResult;
 use App\Models\AssignTest;
 use App\Models\SubAssignTest;
 use App\Models\Method;
-use App\Models\Reagent;
+use App\Models\Reagent; 
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -16,26 +16,6 @@ use Carbon\Carbon;
 
 class DataEntryController extends Controller
 {
-    public function getMethodDetails($testCode)
-    {
-
-        $methodDetails = DB::table('methods')
-            ->select('methods.methodname', 'units.unit', 'reagents.reagent')
-            ->join('units', 'methods.unit_id', '=', 'units.id')
-            ->join('reagents', 'methods.reagent_id', '=', 'reagents.id')
-            ->where('methods.testcode', $testCode)
-            ->first();
-
-        // Fetch all reagents related to the test code
-        $reagents = DB::table('methods')
-            ->select('reagents.id', 'reagents.reagent')
-            ->join('reagents', 'methods.reagent_id', '=', 'reagents.id')
-            ->where('methods.testcode', $testCode)
-            ->distinct()
-            ->get();
-
-        return response()->json(['methodDetails' => $methodDetails, 'reagents' => $reagents]);
-    }
 
     public function index()
     {
@@ -62,8 +42,7 @@ class DataEntryController extends Controller
                 'instrument_id' => $instrumentId,
                 'reagent_id' => $reagentId,
             ]);
-        })
-        ->first();
+        })->first();
 
         if ($subAssignTest) {
             $assignTestId = $subAssignTest->assign_test_id;
@@ -78,54 +57,45 @@ class DataEntryController extends Controller
 
     public function showEntryResults($assignTestId)
     {
+        $subAssignTests = SubAssignTest::where('assign_test_id', $assignTestId)->get();
+
         // Fetch values of lab_id, prog_id, instrument_id, and reagent_id
-        $assignTest = AssignTest::find($assignTestId);
+        $assignTest = AssignTest::with('subAssignTests')
+            ->find($assignTestId);
 
-        // Fetch test codes from subassigntest based on assignTestId
-        $testCodes = SubAssignTest::where('assign_test_id', $assignTestId)->pluck('testcode');
+        // Fetch test codes from subassigntest based on assignTest relationship
+        $testCodes = $assignTest->subAssignTests->pluck('testcode');
 
-        // Fetch all assignTests (you might adjust this query based on your actual data structure)
-        $assignTests = AssignTest::all();
-
-        // Fetch subAssignTests based on testCodes
-        $subAssignTests = SubAssignTest::whereIn('testcode', $testCodes)->get();
-
-        // Fetch the methodDetails based on the assignTest
-        $methodDetails = [];
-        foreach ($subAssignTests as $subAssignTest) {
-            $methodDetails[$subAssignTest->testcode] = Method::where('testcode', $subAssignTest->testcode)->first();
-        }
+        // Fetch method details based on the test codes
+        $methodDetails = Method::whereIn('testcode', $testCodes)
+            ->pluck('methodname', 'testcode')
+            ->toArray();
 
         // Fetch reagent details using the query
         $reagentDetails = DB::table('methods as A')
             ->select('A.reagent_id', 'B.reagent')
             ->join('reagents as B', 'A.reagent_id', '=', 'B.id')
-            ->whereIn('A.testcode', $testCodes) // Filter by testCodes
+            ->whereIn('A.testcode', $testCodes)
             ->get();
 
         // Extract unique reagent IDs if needed
-        $reagentId = $reagentDetails->pluck('reagent_id')->unique()->toArray();
+        $uniqueReagentIds = $reagentDetails->pluck('reagent_id')->unique()->toArray();
 
         // Pass data to the view
         return view('user.show', [
             'assignTest' => $assignTest,
             'testCodes' => $testCodes,
-            'assignTests' => $assignTests,
-            'subAssignTests' => $subAssignTests, // Pass the subAssignTests variable
+            'subAssignTests' => $subAssignTests, // Add this line to pass subAssignTests to the view
             'lab_id' => $assignTest->lab_id,
             'prog_id' => $assignTest->prog_id,
             'instrument_id' => $assignTest->instrument_id,
-            'assignTestId' => $assignTestId, // Pass the assignTestId variable
+            'assignTestId' => $assignTestId,
             'methodDetails' => $methodDetails,
             'reagentDetails' => $reagentDetails,
-            'reagentId' => $reagentId,
+            'reagentId' => $uniqueReagentIds,
         ]);
     }
 
-    public function getName($assignTestId) {
-        $assignTest = AssignTest::find($assignTestId);
-        
-    }
 
     public function store(Request $request, $assignTestId)
     {

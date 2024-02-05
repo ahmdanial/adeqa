@@ -53,6 +53,17 @@
                     </div>
 
                     <div class="mb-3 row">
+                        <label for="reagent_id" class="col-sm-3 col-form-label">Reagent:</label>
+                        <div class="col-sm-9">
+                            <select name="reagent_id" class="form-control" id="reagent_id">
+                                @foreach($methods as $method)
+                                <option value="{{ $method->reagent->id }}">{{ $method->reagent->reagent }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
                         <label for="testcode" class="col-sm-3 col-form-label">Test:</label>
                         <div class="col-sm-9">
                             <div class="row">
