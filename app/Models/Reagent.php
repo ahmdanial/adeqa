@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Reagent extends Model
 {
     use HasFactory;
+
+    protected $table = 'reagents';
+
     protected $fillable = [
         'reagent',
         'instrument_id',
@@ -18,7 +21,7 @@ class Reagent extends Model
     // Relationships
     public function instrument()
     {
-        return $this->belongsTo(Instrument::class, 'instrument_id'); // Updated foreign key column name
+        return $this->belongsTo(Instrument::class, 'instrument_id', 'id'); // Updated foreign key column name
     }
 
     public function addedBy()

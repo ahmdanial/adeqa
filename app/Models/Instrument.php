@@ -9,6 +9,8 @@ class Instrument extends Model
 {
     use HasFactory;
 
+    protected $table = 'instruments';
+
     protected $fillable = [
         'department_id',
         'instrumentname',
@@ -30,4 +32,10 @@ class Instrument extends Model
     {
         return $this->belongsTo(User::class, 'update_by', 'id');
     }
+
+    public function reagents()
+    {
+        return $this->hasMany(Reagent::class, 'instrument_id', 'id');
+    }
+
 }

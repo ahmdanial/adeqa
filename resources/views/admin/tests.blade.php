@@ -29,10 +29,28 @@
               </div>
 
               <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Department:</label>
-                <select name="department_id" class="form-control" id="department_id">
-                    @foreach($departments as $deps)
-                        <option value="{{ $deps->id }}">{{ $deps->department }}</option>
+                <label for="recipient-name" class="col-form-label">Reagent:</label>
+                <select name="reagent_id" class="form-control" id="reagent_id">
+                    @foreach($reagents as $reags)
+                        <option value="{{ $reags->id }}">{{ $reags->reagent }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+              <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Method:</label>
+                <select name="method_id" class="form-control" id="method_id">
+                    @foreach($methods as $method)
+                        <option value="{{ $method->id }}">{{ $method->methodname }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+              <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Unit:</label>
+                <select name="unit_id" class="form-control" id="unit_id">
+                    @foreach($units as $unit)
+                        <option value="{{ $unit->id }}">{{ $unit->unit }}</option>
                     @endforeach
                 </select>
             </div>
@@ -102,9 +120,9 @@
               <thead class=" text-primary">
                 <th class="w-10p">Test Code</th>
                 <th class="w-10p">Test Name</th>
-                <th class="w-10p">Department</th>
-                <th class="w-10p">Added By</th>
-                <th class="w-10p">Updated By</th>
+                <th class="w-10p">Reagent</th>
+                <th class="w-10p">Method</th>
+                <th class="w-10p">Unit</th>
                 <th class="w-10p" style="text-align: center;">ACTIONS</th>
               </thead>
               <tbody>
@@ -113,26 +131,26 @@
                   <td>{{ $data->testcode }}</td>
                   <td>{{ $data->testname }}</td>
                   <td>
-                    @if ($data->department)
-                        {{ $data->department->department}}
+                    @if ($data->reagent)
+                        {{ $data->reagent->reagent}}
                     @else
-                        No Department
+                        No Reagent
                     @endif
-                </td>
+                  </td>
                   <td>
-                    @if ($data->addedBy)
-                        {{ $data->addedBy->username }}
+                    @if ($data->method)
+                        {{ $data->method->methodname}}
                     @else
-                        N/A
+                        No Method
                     @endif
-                </td>
-                <td>
-                    @if ($data->updateBy)
-                        {{ $data->updateBy->username }}
+                  </td>
+                  <td>
+                    @if ($data->unit)
+                        {{ $data->unit->unit}}
                     @else
-                        N/A
+                        No Unit
                     @endif
-                </td>
+                  </td>
                   <td style="display: flex; justify-content: center;">
                 <a href="{{ url('tests/'.$data->testcode)}}" class="btn btn-success">
                     <i class="fas fa-pen"></i></a>&nbsp;&nbsp;

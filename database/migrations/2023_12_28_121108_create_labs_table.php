@@ -30,7 +30,7 @@ class CreateLabsTable extends Migration
             // Foreign key constraints
             $table->foreign('added_by')->references('id')->on('users');
             $table->foreign('update_by')->references('id')->on('users');
-            $table->foreign('department_id')->references('id')->on('departments')->onDelete('restrict');
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
         });
     }
 

@@ -24,4 +24,12 @@ class Department extends Model
     {
         return $this->hasMany(Lab::class);
     }
+    public function instrument()
+    {
+        return $this->hasMany(Instrument::class);
+    }
+    public function reagent()
+    {
+        return $this->hasMany(Reagent::class);
+    }
 }

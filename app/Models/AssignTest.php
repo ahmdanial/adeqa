@@ -28,6 +28,11 @@ class AssignTest extends Model
         return $this->belongsTo(Lab::class, 'lab_id');
     }
 
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id');
+    }
+
     public function program()
     {
         return $this->belongsTo(Program::class, 'prog_id');

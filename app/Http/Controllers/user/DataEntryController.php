@@ -6,7 +6,7 @@ use App\Models\EntryResult;
 use App\Models\AssignTest;
 use App\Models\SubAssignTest;
 use App\Models\Method;
-use App\Models\Reagent; 
+use App\Models\Reagent;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -19,11 +19,17 @@ class DataEntryController extends Controller
 
     public function index()
     {
-        $entryResults = EntryResult::all();
+        // Fetch all AssignTests (you might adjust this query based on your actual data structure)
         $assignTests = AssignTest::all();
-        $assignTestId = $assignTests->first()->id ?? null; // Get the first assignTestId
+
+        // Fetch the methodDetails for the first AssignTest (you might adjust this query based on your actual data structure)
+        $assignTestId = $assignTests->id ?? null;
+
+        // Fetch other data based on the obtained $assignTestId
+        $entryResults = EntryResult::all();
         $methodDetails = Method::find($assignTestId);
         $reagents = Reagent::all();
+
         return view('user.entry-results', compact('entryResults', 'assignTests', 'assignTestId', 'methodDetails', 'reagents'));
     }
 

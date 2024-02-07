@@ -22,7 +22,7 @@ class AlterLabsTable extends Migration
         Schema::table('labs', function (Blueprint $table) {
             $table->foreign('department_id')
                   ->references('id')->on('departments')
-                  ->onDelete('restrict');
+                  ->onDelete('cascade');
         });
     }
 

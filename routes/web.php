@@ -93,18 +93,6 @@ Route::group(['middleware' => ['superadmin']], function () {
     Route::put('/methods-update/{id}', [App\Http\Controllers\Admin\MethodController::class, 'update']);
     Route::delete('methods-delete/{id}', [App\Http\Controllers\Admin\MethodController::class, 'delete']);
 
-    Route::get('/assign-programs', [AssignProgramController::class, 'index'])->name('assign.programs');
-    Route::post('/save-assign-programs', [AssignProgramController::class, 'store']);
-    Route::get('/assign-programs/{id}', [AssignProgramController::class, 'edit']);
-    Route::put('/assign-programs-update/{id}', [AssignProgramController::class, 'update']);
-    Route::delete('/assign-programs-delete/{id}', [AssignProgramController::class, 'delete']);
-
-    Route::get('/assign-users', [AssignUserController::class, 'index'])->name('assign.users');
-    Route::post('/save-assign-users', [AssignUserController::class, 'store']);
-    Route::get('/assign-users/{user_code}', [AssignUserController::class, 'edit']);
-    Route::put('/assign-users-update/{user_code}', [AssignUserController::class, 'update']);
-    Route::delete('/assign-users-delete/{user_code}', [AssignUserController::class, 'delete']);
-
 });
 
 Route::group(['middleware' => ['admin']], function () {
@@ -113,6 +101,7 @@ Route::group(['middleware' => ['admin']], function () {
     });
 
     Route::get('assign-tests', [AssignTestController::class, 'index']);
+    Route::post('/assign-tests/fetch', [AssignTestController::class, 'fetch'])->name('assign-tests.fetch');
     Route::post('/save-assign-tests', [AssignTestController::class, 'store']);
     Route::get('/assign-tests/{id}', [AssignTestController::class, 'edit']);
     Route::put('/assign-tests-update/{id}', [AssignTestController::class, 'update']);

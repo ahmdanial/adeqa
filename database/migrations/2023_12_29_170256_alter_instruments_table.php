@@ -22,7 +22,7 @@ class AlterInstrumentsTable extends Migration
         Schema::table('instruments', function (Blueprint $table) {
             $table->foreign('department_id')
                   ->references('id')->on('departments')
-                  ->onDelete('restrict');
+                  ->onDelete('cascade');
         });
     }
 

@@ -8,6 +8,8 @@ use App\Models\Lab;
 use App\Models\Instrument;
 use App\Models\Test;
 use App\Models\Method;
+use App\Models\Reagent;
+use App\Models\Department;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -18,16 +20,49 @@ class AssignTestController extends Controller
     public function index()
     {
         $assignTests = AssignTest::all();
+        $departments = Department::all();
         $programs = Program::all();
         $labs = Lab::all();
         $instruments = Instrument::all();
         $tests = Test::all();
         $methods = Method::all();
+        $reagents = Reagent::all();
 
-        return view('useradmin.assign-tests', compact('assignTests', 'programs', 'labs', 'instruments', 'tests','methods'));
+        return view('useradmin.assign-tests', compact('departments', 'assignTests', 'programs', 'labs', 'instruments', 'tests','methods','reagents' ));
     }
 
-    // ...
+    public function fetch(Request $request)
+    {
+        $select = $request->get('select');
+        $value = $request->get('value');
+        $dependent = $request->get('dependent');
+        $data = [];
+
+        if ($select == 'department_id' && $value != '') {
+            // Assuming you have a relationship between Department and Instrument
+            $instrumentsData = Instrument::where('department_id', $value)->pluck('instrumentname', 'id');
+            $data['instruments'] = $instrumentsData;
+
+            // Fetch reagents based on the selected instrument
+            if ($dependent == 'reagent_id') {
+                // Assuming Instrument model has a relationship with Reagent model
+                $instrument = Instrument::find($value);
+                $reagentsData = $instrument->reagents->pluck('reagent', 'id');
+                $data['reagents'] = $reagentsData;
+
+                // Fetch testcodes based on the selected reagent
+                if ($dependent == 'testcode_id') {
+                    // Assuming Reagent model has a relationship with Test model
+                    $reagent = Reagent::find($value);
+                    $testcodesData = $reagent->tests()->pluck('testcode', 'id');
+                    $data['testcodes'] = $testcodesData;
+                }
+            }
+        }
+
+        return response()->json($data);
+    }
+
 
     public function store(Request $request)
     {
@@ -85,29 +120,29 @@ class AssignTestController extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    $assignTest = AssignTest::findOrFail($id);
+    {
+        $assignTest = AssignTest::findOrFail($id);
 
-    $assignTest->lab_id = $request->input('lab_id');
-    $assignTest->prog_id = $request->input('prog_id');
-    $assignTest->instrument_id = $request->input('instrument_id');
-    $assignTest->reagent_id = $request->input('reagent_id');
-    // Remove the following line, as 'testcode' is not a direct property of AssignTest
-    // $assignTest->testcode = $request->input('testcode');
-    $assignTest->update_by = auth()->user()->id;
+        $assignTest->lab_id = $request->input('lab_id');
+        $assignTest->prog_id = $request->input('prog_id');
+        $assignTest->instrument_id = $request->input('instrument_id');
+        $assignTest->reagent_id = $request->input('reagent_id');
+        // Remove the following line, as 'testcode' is not a direct property of AssignTest
+        // $assignTest->testcode = $request->input('testcode');
+        $assignTest->update_by = auth()->user()->id;
 
-    // Save the main record
-    $assignTest->save();
+        // Save the main record
+        $assignTest->save();
 
-    // Get selected test codes from the form
-    $selectedTestCodes = $request->input('testcodes', []); // Default to an empty array if no checkboxes are selected
+        // Get selected test codes from the form
+        $selectedTestCodes = $request->input('testcodes', []); // Default to an empty array if no checkboxes are selected
 
-    // Sync the tests for the assign_test record using the pivot table
-    $assignTest->tests()->sync($selectedTestCodes);
+        // Sync the tests for the assign_test record using the pivot table
+        $assignTest->tests()->sync($selectedTestCodes);
 
-    Session::flash('statuscode', 'info');
-    return redirect('/assign-tests')->with('status', 'Assigned Test Updated Successfully');
-}
+        Session::flash('statuscode', 'info');
+        return redirect('/assign-tests')->with('status', 'Assigned Test Updated Successfully');
+    }
 
     public function delete($id)
     {

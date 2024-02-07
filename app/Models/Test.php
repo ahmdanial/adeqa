@@ -18,15 +18,27 @@ class Test extends Model
     protected $fillable = [
         'testcode',
         'testname',
-        'department_id',
+        'reagent_id',
+        'method_id',
+        'unit_id',
         'added_by',
         'update_by',
     ];
 
     // Relationships
-    public function department()
+    public function reagent()
     {
-        return $this->belongsTo(Department::class, 'department_id'); // Updated foreign key column name
+        return $this->belongsTo(Reagent::class, 'reagent_id'); // Updated foreign key column name
+    }
+
+    public function method()
+    {
+        return $this->belongsTo(Method::class, 'method_id'); // Updated foreign key column name
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class, 'unit_id'); // Updated foreign key column name
     }
 
     public function addedBy()

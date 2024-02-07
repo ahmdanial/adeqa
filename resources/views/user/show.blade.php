@@ -11,6 +11,29 @@
             <div class="card-header">
                 <h4 class="card-title">DATA ENTRY</h4>
                 <br>
+                <?php
+                $conn = new mysqli("localhost", "root", "","adeqa");
+
+                $labid = $_GET['lab_id'];
+                $progid = $_GET['prog_id'];
+                $instrument = $_GET['instrument_id'];
+                $reagent = $_GET['reagent_id'];
+
+                $sql = "SELECT id FROM assign_test WHERE lab_id = '$labid' AND prog_id = '$progid' AND instrument_id = '$instrument'
+                AND reagent_id = '$reagent'";
+                $result = $conn->query($sql);
+                $row = $result->fetch_object();
+                $assignTestID = $row->id;
+
+                echo $assignTestID;
+
+                $sql2 = "SELECT testcode FROM subassigntest WHERE assign_test_id = '$assignTestID'";
+                $result2 = $conn->query($sql2);
+                while($row2 = $result2 -> fetch_object()){
+                    $testcode1 = $row2->testcode;
+                    echo $testcode1;
+                }
+                ?>
 
                 <form action="{{ route('entry-results.store', ['assignTestId' => $assignTestId]) }}" method="POST">
                     @csrf

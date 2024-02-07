@@ -94,7 +94,7 @@
                     <p>Test Setup</p>
                 </a>
                 <ul class="collapse list-unstyled" id="setupDropdown">
-                    @foreach(['instruments', 'reagents', 'tests', 'units', 'methods'] as $item)
+                    @foreach(['instruments', 'reagents',  'units', 'methods', 'tests'] as $item)
                         <li class="{{ $item == request()->path() ? 'active' : '' }}">
                             <a href="{{ "./$item" }}" style="padding-left: 30px;">
                                 <i class="now-ui-icons design_app"></i>

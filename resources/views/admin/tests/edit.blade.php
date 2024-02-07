@@ -27,11 +27,33 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Department:</label>
-                        <select name="department_id" class="form-control" id="department_id">
-                            @foreach($departments as $dep)
-                                <option value="{{ $dep->id }}" {{ $dep->id == $test->department_id ? 'selected' : '' }}>
-                                    {{ $dep->department }}
+                        <label for="recipient-name" class="col-form-label">Reagent:</label>
+                        <select name="reagent_id" class="form-control" id="reagent_id">
+                            @foreach($reagents as $reag)
+                                <option value="{{ $reag->id }}" {{ $reag->id == $test->reagent_id ? 'selected' : '' }}>
+                                    {{ $reag->reagent }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Method:</label>
+                        <select name="method_id" class="form-control" id="method_id">
+                            @foreach($methods as $method)
+                                <option value="{{ $method->id }}" {{ $method->id == $test->method_id ? 'selected' : '' }}>
+                                    {{ $method->methodname }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Unit:</label>
+                        <select name="unit_id" class="form-control" id="unit_id">
+                            @foreach($units as $unit)
+                                <option value="{{ $unit->id }}" {{ $unit->id == $test->unit_id ? 'selected' : '' }}>
+                                    {{ $unit->unit }}
                                 </option>
                             @endforeach
                         </select>

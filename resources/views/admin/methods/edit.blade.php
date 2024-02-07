@@ -21,39 +21,6 @@
                       <input type="text" name="methodname" class="form-control" value="{{ $method->methodname }}">
                     </div>
 
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Test Code:</label>
-                        <select name="testcode" class="form-control" id="testcode">
-                            @foreach($tests as $test)
-                                <option value="{{ $test->testcode }}" {{ $test->testcode == $method->testcode ? 'selected' : '' }}>
-                                    {{ $test->testcode }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Reagent:</label>
-                        <select name="reagent_id" class="form-control" id="reagent_id">
-                            @foreach($reagent as $reag)
-                                <option value="{{ $reag->id }}" {{ $reag->id == $method->reagent_id ? 'selected' : '' }}>
-                                    {{ $reag->reagent }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Reagent:</label>
-                        <select name="unit_id" class="form-control" id="unit_id">
-                            @foreach($units as $unit)
-                                <option value="{{ $unit->id }}" {{ $unit->id == $method->unit_id ? 'selected' : '' }}>
-                                    {{ $unit->unit }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
                 </div>
                 <div class="modal-footer">
                   <a href="{{ url('methods') }}" class="btn btn-primary">BACK</a>

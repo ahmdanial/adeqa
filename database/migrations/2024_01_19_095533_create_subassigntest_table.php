@@ -20,7 +20,7 @@ class CreateSubassigntestTable extends Migration
 
             // Foreign Key Constraints
             $table->foreign('assign_test_id')->references('id')->on('assign_test')->onDelete('cascade');
-            $table->foreign('testcode')->references('testcode')->on('methods')->onDelete('cascade');
+            $table->foreign('testcode')->references('testcode')->on('tests')->onDelete('cascade');
         });
     }
 

@@ -19,35 +19,8 @@
             {{ csrf_field() }}
 
             <div class="mb-3">
-              <label for="recipient-name" class="col-form-label">Method:</label>
+              <label for="recipient-name" class="col-form-label">Method Name:</label>
               <input type="text" name="methodname" class="form-control" id="methodname">
-            </div>
-
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Test:</label>
-                <select name="testcode" class="form-control" id="testcode">
-                    @foreach($tests as $test)
-                        <option value="{{ $test->testcode }}">{{ $test->testname }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Reagent:</label>
-                <select name="reagent_id" class="form-control" id="reagent_id">
-                    @foreach($reagent as $reag)
-                        <option value="{{ $reag->id }}">{{ $reag->reagent }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Unit:</label>
-                <select name="unit_id" class="form-control" id="unit_id">
-                    @foreach($units as $unit)
-                        <option value="{{ $unit->id }}">{{ $unit->unit }}</option>
-                    @endforeach
-                </select>
             </div>
 
 
@@ -116,41 +89,16 @@
               <thead class=" text-primary">
                 <th class="w-10p">ID Method</th>
                 <th class="w-10p">Method Name</th>
-                <th class="w-10p">Tests</th>
-                <th class="w-10p">Reagent</th>
-                <th class="w-10p">Unit</th>
                 <th class="w-10p">Added By</th>
                 <th class="w-10p">Updated By</th>
                 <th class="w-10p" style="text-align: center;">ACTIONS</th>
               </thead>
               <tbody>
-                @foreach ($method as $data)
+                @foreach ($methods as $data)
                 <tr>
                   <td>{{ $data->id }}</td>
                   <td>{{ $data->methodname }}</td>
-                  <td>
-                    @if ($data->test)
-                    {{ $data->test->testname}}
-                    @else
-                        No Test
-                    @endif
-                </td>
 
-                <td>
-                    @if ($data->reagent)
-                        {{ $data->reagent->reagent}}
-                    @else
-                        No Reagent
-                    @endif
-                </td>
-
-                <td>
-                    @if ($data->unit)
-                        {{ $data->unit->unit}}
-                    @else
-                        No Unit
-                    @endif
-                </td>
 
                 <td>
                     @if ($data->addedBy)

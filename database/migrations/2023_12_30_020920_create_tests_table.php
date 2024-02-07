@@ -15,14 +15,18 @@ class CreateTestsTable extends Migration
     {
         Schema::create('tests', function (Blueprint $table) {
             $table->string('testcode', 255)->primary();
-            $table->unsignedBigInteger('department_id')->nullable();
             $table->string('testname')->nullable();
+            $table->unsignedBigInteger('reagent_id')->nullable();
+            $table->unsignedBigInteger('method_id')->nullable();
+            $table->unsignedBigInteger('unit_id')->nullable();
             $table->unsignedBigInteger('added_by')->nullable();
             $table->unsignedBigInteger('update_by')->nullable();
             $table->timestamps();
 
             // Foreign key constraints
-            $table->foreign('department_id')->references('id')->on('departments')->onDelete('restrict');
+            $table->foreign('reagent_id')->references('id')->on('reagents')->onDelete('cascade');
+            $table->foreign('method_id')->references('id')->on('methods')->onDelete('cascade');
+            $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade');
             $table->foreign('added_by')->references('id')->on('users')->onDelete('set null');
             $table->foreign('update_by')->references('id')->on('users')->onDelete('set null');
         });

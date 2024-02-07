@@ -37,6 +37,7 @@
   <link href="../assets/demo/demo.css" rel="stylesheet" />
   <link rel="stylesheet" href="{{ asset('assets/css/dataTables.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/sweetalert2.css') }}">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
 <body class="">

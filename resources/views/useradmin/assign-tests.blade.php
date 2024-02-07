@@ -20,6 +20,18 @@
                     {{ csrf_field() }}
 
                     <div class="mb-3 row">
+                        <label for="department_id" class="col-sm-3 col-form-label">Department:</label>
+                        <div class="col-sm-9">
+                            <select name="department_id" class="form-control dynamic" id="department_id" data-dependent="instrument_id">
+                                <option value="">-- Select Department --</option> <!-- Added this line for the initial option -->
+                                @foreach($departments as $dept)
+                                    <option value="{{ $dept->id }}">{{ $dept->department }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
                         <label for="lab_id" class="col-sm-3 col-form-label">Lab:</label>
                         <div class="col-sm-9">
                             <select name="lab_id" class="form-control" id="lab_id">
@@ -33,7 +45,7 @@
                     <div class="mb-3 row">
                         <label for="prog_id" class="col-sm-3 col-form-label">Program:</label>
                         <div class="col-sm-9">
-                            <select name="prog_id" class="form-control" id="prog_id">
+                            <select name="prog_id" class="form-control" id="prog_id" >
                                 @foreach($programs as $program)
                                 <option value="{{ $program->id }}">{{ $program->programname }}</option>
                                 @endforeach
@@ -44,10 +56,11 @@
                     <div class="mb-3 row">
                         <label for="instrument_id" class="col-sm-3 col-form-label">Instrument:</label>
                         <div class="col-sm-9">
-                            <select name="instrument_id" class="form-control" id="instrument_id">
-                                @foreach($instruments as $instrument)
-                                <option value="{{ $instrument->id }}">{{ $instrument->instrumentname }}</option>
-                                @endforeach
+                            <select name="instrument_id" class="form-control dynamic" id="instrument_id" data-dependent="reagent_id">
+                                <option>-- Select instrument id --</option>
+                                @foreach($instruments as $inst)
+                                    <option value="{{ $inst->id }}">{{ $inst->instrumentname }}</option>
+                                    @endforeach
                             </select>
                         </div>
                     </div>
@@ -55,17 +68,18 @@
                     <div class="mb-3 row">
                         <label for="reagent_id" class="col-sm-3 col-form-label">Reagent:</label>
                         <div class="col-sm-9">
-                            <select name="reagent_id" class="form-control" id="reagent_id">
-                                @foreach($methods as $method)
-                                <option value="{{ $method->reagent->id }}">{{ $method->reagent->reagent }}</option>
-                                @endforeach
+                            <select name="reagent_id" class="form-control dynamic" id="reagent_id" data-dependent="testcode">
+                                <option>-- Select reagent id --</option>
+                                @foreach($reagents as $reag)
+                                    <option value="{{ $reag->id }}">{{ $reag->reagent }}</option>
+                                    @endforeach
                             </select>
                         </div>
                     </div>
 
                     <div class="mb-3 row">
                         <label for="testcode" class="col-sm-3 col-form-label">Test:</label>
-                        <div class="col-sm-9">
+                        <div id="testcode-container" class="col-sm-9" style="display: none;">
                             <div class="row">
                                 @foreach($tests as $test)
                                     <div class="col-sm-6">
@@ -194,6 +208,7 @@
                         @endforeach
                     </td>
 
+
                   {{--<td>
                     @if ($data->addedBy)
                         {{ $data->addedBy->username }}
@@ -249,5 +264,81 @@
                 $('#deletemodalpop').modal('show');
             });
         });
+
+        $(document).ready(function() {
+        $('.dynamic').change(function() {
+            var select = $(this).attr("id");
+            var value = $(this).val();
+            var dependent = $(this).data('dependent');
+            var _token = $('input[name="_token"]').val();
+
+            if (dependent) {
+                $.ajax({
+                    url: "{{ route('assign-tests.fetch') }}",
+                    method: "POST",
+                    data: {
+                        select: select,
+                        value: value,
+                        _token: _token,
+                        dependent: dependent
+                    },
+                    success: function(result) {
+                        console.log(result); // Log the entire response object
+
+                        // Find the dependent dropdown by ID
+                        var dependentDropdown = $('#' + dependent);
+
+                        // Clear existing options
+                        dependentDropdown.empty();
+
+                        // Add a default option for the dependent dropdown
+                        dependentDropdown.append('<option value="">-- Select ' + dependent.replace('_', ' ') + ' --</option>');
+
+                        // Check if the dependent dropdown is 'instrument_id'
+                        if (dependent === 'instrument_id' && result.instruments) {
+                            // Add the options received from the AJAX response for instruments
+                            $.each(result.instruments, function(key, value) {
+                                dependentDropdown.append('<option value="' + key + '">' + value + '</option>');
+                            });
+                        } else if (dependent === 'reagent_id' && result.reagents) {
+                            // Add the options received from the AJAX response for reagents
+                            $.each(result.reagents, function(key, value) {
+                                dependentDropdown.append('<option value="' + key + '">' + value + '</option>');
+                            });
+                        }
+
+                        // Assuming the container to append checkboxes has an ID 'testcode-container'
+                        var testcodeContainer = $('#testcode-container');
+
+                        // Clear previous checkboxes
+                        testcodeContainer.empty();
+
+                        // Check if the response has testcodes data
+                        if (dependent === 'reagent_id' && result.testcodes) {
+                            // Loop through the testcodes data and create checkboxes
+                            $.each(result.testcodes, function(key, value) {
+                                var checkbox = $('<div class="form-check1">' +
+                                                    '<input type="checkbox" class="form-check-input1" name="testcodes[]" value="' + key + '" id="test_' + key + '">' +
+                                                    '<label class="form-check-label" for="test_' + key + '">' + value + '</label>' +
+                                                '</div>');
+
+                                // Append the checkbox to the container
+                                testcodeContainer.append(checkbox);
+                            });
+
+                            // Show the dependent container
+                            testcodeContainer.show();
+                        } else {
+                            // Hide the dependent container if no data is available
+                            testcodeContainer.hide();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);  // Log any errors to the console
+                    }
+                });
+            }
+        });
+    });
     </script>
 @endsection

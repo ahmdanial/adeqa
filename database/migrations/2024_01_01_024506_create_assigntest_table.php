@@ -29,7 +29,7 @@ class CreateAssigntestTable extends Migration
             $table->foreign('lab_id')->references('id')->on('labs')->onDelete('cascade');
             $table->foreign('prog_id')->references('id')->on('programs')->onDelete('cascade');
             $table->foreign('instrument_id')->references('id')->on('instruments')->onDelete('cascade');
-            $table->foreign('reagent_id')->references('reagent_id')->on('methods')->onDelete('cascade');
+            $table->foreign('reagent_id')->references('id')->on('reagents')->onDelete('cascade');
 
             $table->foreign('added_by')->references('id')->on('users')->onDelete('set null');
             $table->foreign('update_by')->references('id')->on('users')->onDelete('set null');
