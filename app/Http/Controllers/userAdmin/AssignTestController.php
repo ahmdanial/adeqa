@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AssignTestController extends Controller
 {
@@ -44,25 +45,39 @@ class AssignTestController extends Controller
             $data['instruments'] = $instrumentsData;
 
             // Fetch reagents based on the selected instrument
-            if ($dependent == 'reagent_id') {
+            if ($dependent == 'reagent_id' && $request->has('instrument_id') && $request->get('instrument_id') != '') {
                 // Assuming Instrument model has a relationship with Reagent model
-                $instrument = Instrument::find($value);
-                $reagentsData = $instrument->reagents->pluck('reagent', 'id');
-                $data['reagents'] = $reagentsData;
+                $instrument = Instrument::find($request->get('instrument_id'));
+
+                Log::info('Reagents data:', $instrument->reagents);
+                // Fetch reagents with their properties
+                $data['reagents'] = $instrument->reagents->map(function ($reagent) {
+                    return [
+                        'id' => $reagent->id,
+                        'reagent' => $reagent->reagent,
+                        // Add other reagent properties as needed
+                    ];
+                });
 
                 // Fetch testcodes based on the selected reagent
-                if ($dependent == 'testcode_id') {
+                if ($request->has('reagent_id') && $request->get('reagent_id') != '') {
                     // Assuming Reagent model has a relationship with Test model
-                    $reagent = Reagent::find($value);
-                    $testcodesData = $reagent->tests()->pluck('testcode', 'id');
-                    $data['testcodes'] = $testcodesData;
+                    $reagent = Reagent::find($request->get('reagent_id'));
+
+                    // Fetch testcodes with their properties
+                    $data['testcodes'] = $reagent->tests->map(function ($test) {
+                        return [
+                            'id' => $test->id,
+                            'testcode' => $test->testcode,
+                            // Add other testcode properties as needed
+                        ];
+                    });
                 }
             }
         }
 
         return response()->json($data);
     }
-
 
     public function store(Request $request)
     {

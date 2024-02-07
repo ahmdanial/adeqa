@@ -264,7 +264,9 @@
                 $('#deletemodalpop').modal('show');
             });
         });
+    </script>
 
+    <script>
         $(document).ready(function() {
         $('.dynamic').change(function() {
             var select = $(this).attr("id");
