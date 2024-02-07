@@ -35,7 +35,7 @@ class Instrument extends Model
 
     public function reagents()
     {
-        return $this->hasMany(Reagent::class, 'instrument_id', 'id');
+        return $this->hasMany(Reagent::class);
     }
 
 }

@@ -21,7 +21,7 @@ class Reagent extends Model
     // Relationships
     public function instrument()
     {
-        return $this->belongsTo(Instrument::class, 'instrument_id', 'id'); // Updated foreign key column name
+        return $this->belongsTo(Instrument::class);
     }
 
     public function addedBy()
@@ -32,5 +32,10 @@ class Reagent extends Model
     public function updateBy()
     {
         return $this->belongsTo(User::class, 'update_by');
+    }
+
+    public function tests()
+    {
+        return $this->hasMany(Test::class);
     }
 }

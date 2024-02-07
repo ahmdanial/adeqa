@@ -101,7 +101,11 @@ Route::group(['middleware' => ['admin']], function () {
     });
 
     Route::get('assign-tests', [AssignTestController::class, 'index']);
-    Route::post('/assign-tests/fetch', [AssignTestController::class, 'fetch'])->name('assign-tests.fetch');
+
+    Route::post('/fetch-instruments', [AssignTestController::class, 'fetchInstruments'])->name('assign-tests.fetchInstruments');
+    Route::post('/fetch-reagents', [AssignTestController::class, 'fetchReagents'])->name('assign-tests.fetchReagents');
+    Route::post('/fetch-testcodes', [AssignTestController::class, 'fetchTestCodes'])->name('assign-tests.fetchTestCodes');
+
     Route::post('/save-assign-tests', [AssignTestController::class, 'store']);
     Route::get('/assign-tests/{id}', [AssignTestController::class, 'edit']);
     Route::put('/assign-tests-update/{id}', [AssignTestController::class, 'update']);

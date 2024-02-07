@@ -32,7 +32,7 @@ class AssignTestController extends Controller
         return view('useradmin.assign-tests', compact('departments', 'assignTests', 'programs', 'labs', 'instruments', 'tests','methods','reagents' ));
     }
 
-    public function fetch(Request $request)
+    /*public function fetch(Request $request)
     {
         $select = $request->get('select');
         $value = $request->get('value');
@@ -44,20 +44,27 @@ class AssignTestController extends Controller
             $instrumentsData = Instrument::where('department_id', $value)->pluck('instrumentname', 'id');
             $data['instruments'] = $instrumentsData;
 
+            if ($select == 'instrument_id' && $value != '') {
+                // Assuming you have a relationship between Department and Instrument
+                $reagentsData = Reagent::where('instrument_id', $value)->pluck('reagent', 'id');
+                $data['reagents'] = $reagentsData;
+
             // Fetch reagents based on the selected instrument
-            if ($dependent == 'reagent_id' && $request->has('instrument_id') && $request->get('instrument_id') != '') {
-                // Assuming Instrument model has a relationship with Reagent model
+             if ($dependent == 'reagent_id' && $request->has('instrument_id') && $request->get('instrument_id') != '') {
+                / Assuming Instrument model has a relationship with Reagent model
                 $instrument = Instrument::find($request->get('instrument_id'));
 
-                Log::info('Reagents data:', $instrument->reagents);
                 // Fetch reagents with their properties
                 $data['reagents'] = $instrument->reagents->map(function ($reagent) {
                     return [
                         'id' => $reagent->id,
                         'reagent' => $reagent->reagent,
-                        // Add other reagent properties as needed
+                        / Add other reagent properties as needed
                     ];
                 });
+
+                // If you want to include the reagent_id in the response
+                $data['reagent_id'] = $request->get('reagent_id');
 
                 // Fetch testcodes based on the selected reagent
                 if ($request->has('reagent_id') && $request->get('reagent_id') != '') {
@@ -75,9 +82,72 @@ class AssignTestController extends Controller
                 }
             }
         }
+    }
 
         return response()->json($data);
+    }*/
+
+    public function fetchInstruments(Request $request)
+    {
+        $value = $request->get('value');
+
+        if (!empty($value)) {
+            // Assuming you have a relationship between Department and Instrument
+            $instrumentsData = Instrument::where('department_id', $value)->pluck('instrumentname', 'id');
+            return response()->json(['instruments' => $instrumentsData]);
+        }
+
+        return response()->json([]);
     }
+
+    public function fetchReagents(Request $request)
+    {
+        // Fetch reagents based on the selected instrument
+        $instrumentId = $request->get('instrument_id');
+
+        if (!empty($instrumentId)) {
+            // Assuming Instrument model has a relationship with Reagent model
+            $instrument = Instrument::find($instrumentId);
+
+            // Fetch reagents with their properties
+            $reagentsData = $instrument->reagents->map(function ($reagent) {
+                return [
+                    'id' => $reagent->id,
+                    'reagent' => $reagent->reagent,
+                    // Add other reagent properties as needed
+                ];
+            });
+
+            return response()->json(['reagents' => $reagentsData]);
+        }
+
+        return response()->json([]);
+    }
+
+    public function fetchTestCodes(Request $request)
+    {
+        // Fetch testcodes based on the selected reagent
+        $reagentId = $request->get('reagent_id');
+
+        if (!empty($reagentId)) {
+            // Assuming Reagent model has a relationship with Test model
+            $reagent = Reagent::find($reagentId);
+
+            // Fetch testcodes with their properties
+            $testCodesData = $reagent->tests->map(function ($test) {
+                return [
+                    'testcode' => $test->testcode,
+                    'testname' => $test->testname,
+                    // Add other testcode properties as needed
+                ];
+            });
+
+            return response()->json(['testcodes' => $testCodesData]);
+        }
+
+        return response()->json([]);
+    }
+
 
     public function store(Request $request)
     {

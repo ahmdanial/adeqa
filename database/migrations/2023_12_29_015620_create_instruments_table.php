@@ -22,7 +22,7 @@ class CreateInstrumentsTable extends Migration
             $table->timestamps();
 
             // Foreign key constraints
-            $table->foreign('department_id')->references('id')->on('departments');
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
             $table->foreign('added_by')->references('id')->on('users')->onDelete('set null');
             $table->foreign('update_by')->references('id')->on('users')->onDelete('set null');
         });

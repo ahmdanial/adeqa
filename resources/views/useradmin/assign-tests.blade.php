@@ -267,80 +267,132 @@
     </script>
 
     <script>
-        $(document).ready(function() {
-        $('.dynamic').change(function() {
-            var select = $(this).attr("id");
-            var value = $(this).val();
-            var dependent = $(this).data('dependent');
-            var _token = $('input[name="_token"]').val();
+       $(document).ready(function() {
+       $('.dynamic').change(function() {
+        var select = $(this).attr("id");
+        var value = $(this).val();
+        var dependent = $(this).data('dependent');
+        var _token = $('input[name="_token"]').val();
 
-            if (dependent) {
-                $.ajax({
-                    url: "{{ route('assign-tests.fetch') }}",
-                    method: "POST",
-                    data: {
-                        select: select,
-                        value: value,
-                        _token: _token,
-                        dependent: dependent
-                    },
-                    success: function(result) {
-                        console.log(result); // Log the entire response object
+        // Clear existing options in the dependent dropdown
+        $('#' + dependent).empty().append('<option value="">-- Select ' + dependent.replace('_', ' ') + ' --</option>');
 
-                        // Find the dependent dropdown by ID
-                        var dependentDropdown = $('#' + dependent);
+        // Clear and hide the testcode container
+        var testcodeContainer = $('#testcode-container');
+        testcodeContainer.empty().hide();
 
-                        // Clear existing options
-                        dependentDropdown.empty();
+        // Make separate AJAX requests based on the selected dropdown
+        if (dependent === 'instrument_id') {
+            fetchInstruments(_token, select, value, dependent);
+        } else if (dependent === 'reagent_id') {
+            var instrument_id = $('#instrument_id').val();
+            fetchReagents(_token, select, value, dependent, instrument_id);
+        }
+    });
 
-                        // Add a default option for the dependent dropdown
-                        dependentDropdown.append('<option value="">-- Select ' + dependent.replace('_', ' ') + ' --</option>');
-
-                        // Check if the dependent dropdown is 'instrument_id'
-                        if (dependent === 'instrument_id' && result.instruments) {
-                            // Add the options received from the AJAX response for instruments
-                            $.each(result.instruments, function(key, value) {
-                                dependentDropdown.append('<option value="' + key + '">' + value + '</option>');
-                            });
-                        } else if (dependent === 'reagent_id' && result.reagents) {
-                            // Add the options received from the AJAX response for reagents
-                            $.each(result.reagents, function(key, value) {
-                                dependentDropdown.append('<option value="' + key + '">' + value + '</option>');
-                            });
-                        }
-
-                        // Assuming the container to append checkboxes has an ID 'testcode-container'
-                        var testcodeContainer = $('#testcode-container');
-
-                        // Clear previous checkboxes
-                        testcodeContainer.empty();
-
-                        // Check if the response has testcodes data
-                        if (dependent === 'reagent_id' && result.testcodes) {
-                            // Loop through the testcodes data and create checkboxes
-                            $.each(result.testcodes, function(key, value) {
-                                var checkbox = $('<div class="form-check1">' +
-                                                    '<input type="checkbox" class="form-check-input1" name="testcodes[]" value="' + key + '" id="test_' + key + '">' +
-                                                    '<label class="form-check-label" for="test_' + key + '">' + value + '</label>' +
-                                                '</div>');
-
-                                // Append the checkbox to the container
-                                testcodeContainer.append(checkbox);
-                            });
-
-                            // Show the dependent container
-                            testcodeContainer.show();
-                        } else {
-                            // Hide the dependent container if no data is available
-                            testcodeContainer.hide();
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);  // Log any errors to the console
-                    }
-                });
+    function fetchInstruments(token, select, value, dependent) {
+        $.ajax({
+            url: "{{ route('assign-tests.fetchInstruments') }}",
+            method: "POST",
+            data: {
+                select: select,
+                value: value,
+                _token: token,
+                dependent: dependent
+            },
+            success: function(result) {
+                if (result.instruments) {
+                    $.each(result.instruments, function(key, value) {
+                        $('#' + dependent).append('<option value="' + key + '">' + value + '</option>');
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
             }
         });
-    });
+    }
+
+    function fetchReagents(token, select, value, dependent, instrument_id) {
+        $.ajax({
+            url: "{{ route('assign-tests.fetchReagents') }}",
+            method: "POST",
+            data: {
+                select: select,
+                value: value,
+                _token: token,
+                dependent: dependent,
+                instrument_id: instrument_id
+            },
+            success: function(result) {
+                console.log(result);
+
+                var dependentDropdown = $('#' + dependent);
+                dependentDropdown.empty().append('<option value="">-- Select ' + dependent.replace('_', ' ') + ' --</option>');
+
+                if (result.reagents) {
+                    console.log(result.reagents);
+
+                    $.each(result.reagents, function(key, reagent) {
+                        dependentDropdown.append('<option value="' + key + '">' + reagent.reagent + '</option>');
+                    });
+
+                    // Show the dependent container
+                    dependentDropdown.show();
+                }
+
+                // Update: Check if the dependent dropdown is 'reagent_id'
+                if (dependent === 'reagent_id') {
+                    // Fetch test codes based on the selected reagent
+                    fetchTestCodes(value);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
+    function fetchTestCodes(reagentId) {
+        var _token = $('input[name="_token"]').val();
+
+        $.ajax({
+            url: "{{ route('assign-tests.fetchTestCodes') }}",
+            method: "POST",
+            data: {
+                reagent_id: reagentId,
+                _token: _token
+            },
+            success: function(result) {
+                console.log(result);
+
+                var testcodeContainer = $('#testcode-container');
+                testcodeContainer.empty();
+
+                if (result.testcodes) {
+                    $.each(result.testcodes, function(key, test) {
+                        var checkbox = $('<div class="col-sm-6">' +
+                            '<div class="form-check1">' +
+                            '<input type="checkbox" class="form-check-input1" name="testcodes[]" value="' + test.id + '" id="test_' + test.id + '">' +
+                            '<label class="form-check-label" for="test_' + test.id + '">' + test.testcode + '</label>' +
+                            '</div>' +
+                            '</div>');
+
+                        testcodeContainer.append(checkbox);
+                    });
+
+                    // Show the dependent container
+                    testcodeContainer.show();
+                } else {
+                    // Hide the dependent container if no data is available
+                    testcodeContainer.hide();
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+});
     </script>
 @endsection
