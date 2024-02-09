@@ -1,0 +1,51 @@
+INSERT INTO users (id, username, email, fullname, designation, department, roles, email_verified_at, password, remember_token, created_at, updated_at, added_by, update_by) VALUES(1, 'Alfa', 'alfadiagnostik@gmail.com', 'Alfa Diagnostik', 'Vendor', 'Biomedical', 'superadmin', NULL, '$2y$10$RHEefdPiJ2qclubll5dukeLgPkGbA7If.Boqt2hN/gw1967IknPV.', NULL, '2024-02-09 10:43:18', '2024-02-09 10:43:18', NULL, NULL);
+INSERT INTO users (id, username, email, fullname, designation, department, roles, email_verified_at, password, remember_token, created_at, updated_at, added_by, update_by) VALUES(2, 'danial', 'danial@gmail.com', 'danial', 'admin', 'IT', 'admin', NULL, '$2y$10$qiXSsyO0p2TNV/GnoIBvb.zIeHSISrcpOy6dZiYZlLNtV.b2AcrTq', NULL, '2024-02-09 11:02:36', '2024-02-09 11:02:36', NULL, NULL);
+COMMIT;
+
+
+INSERT INTO departments (id, department, added_by, update_by, created_at, updated_at) VALUES(1, 'Toxicology', 1, 1, '2024-02-09 10:43:47', '2024-02-09 10:43:47');
+
+INSERT INTO programs (id, programname, added_by, update_by, created_at, updated_at) VALUES(1, 'CP-UP-22-07', 1, 1, '2024-02-09 10:44:19', '2024-02-09 10:44:19');
+INSERT INTO programs (id, programname, added_by, update_by, created_at, updated_at) VALUES(2, 'CP-UP-22-08', 1, 1, '2024-02-09 10:44:29', '2024-02-09 10:44:29');
+
+INSERT INTO instruments (id, department_id, instrumentname, added_by, update_by, created_at, updated_at) VALUES(5, 1, 'Abbot', 1, 1, '2024-02-09 10:50:35', '2024-02-09 10:50:35');
+INSERT INTO instruments (id, department_id, instrumentname, added_by, update_by, created_at, updated_at) VALUES(6, 1, 'ACON Laboratories', 1, 1, '2024-02-09 10:50:48', '2024-02-09 10:50:48');
+INSERT INTO instruments (id, department_id, instrumentname, added_by, update_by, created_at, updated_at) VALUES(7, 1, 'RTK', 1, 1, '2024-02-09 10:50:58', '2024-02-09 10:50:58');
+INSERT INTO instruments (id, department_id, instrumentname, added_by, update_by, created_at, updated_at) VALUES(8, 1, 'Other', 1, 1, '2024-02-09 15:31:15', '2024-02-09 15:31:15');
+
+INSERT INTO labs (id, labname, department_id, address, city, state, postalcode, country, contactno, added_by, update_by, created_at, updated_at) VALUES(1, 'Hospital Kuala Lumpur', 1, 'Jalan Pahang, 50586,Wilayah Persekutuan Kuala Lumpu', 'Kuala Lumpur', 'Kuala Lumpur', '50586', 'Malaysia', '03-26155555', 1, NULL, '2024-02-09 10:46:51', '2024-02-09 10:46:51');
+INSERT INTO labs (id, labname, department_id, address, city, state, postalcode, country, contactno, added_by, update_by, created_at, updated_at) VALUES(2, 'Hospital Sultanah Aminah', 1, 'Jalan Persiaran Abu Bakar Sultan, 80000, Johor Bahru, Johor', 'Johor Bahru', 'Johor', '80000', 'Malaysia', '07-2231666', 1, NULL, '2024-02-09 10:47:32', '2024-02-09 10:47:32');
+INSERT INTO labs (id, labname, department_id, address, city, state, postalcode, country, contactno, added_by, update_by, created_at, updated_at) VALUES(3, 'Hospital Beaufort', 1, 'Peti Surat 40, 89807, Beaufort, Sabah', 'Beaufort', 'Sabah', '89807', 'Malaysia', '087-212333', 1, NULL, '2024-02-09 15:30:39', '2024-02-09 15:30:39');
+
+INSERT INTO methods (id, methodname, added_by, update_by, created_at, updated_at) VALUES(1, 'Qualitative', 1, 1, '2024-02-09 10:52:58', '2024-02-09 10:52:58');
+
+
+INSERT INTO reagents (id, reagent, instrument_id, added_by, update_by, created_at, updated_at) VALUES(3, 'ACON', 6, 1, 1, '2024-02-09 10:51:53', '2024-02-09 11:00:50');
+INSERT INTO reagents (id, reagent, instrument_id, added_by, update_by, created_at, updated_at) VALUES(5, 'Biotest hCG', 7, 1, 1, '2024-02-09 10:52:17', '2024-02-09 10:52:17');
+INSERT INTO reagents (id, reagent, instrument_id, added_by, update_by, created_at, updated_at) VALUES(6, 'Clinitest hCG', 7, 1, 1, '2024-02-09 10:52:29', '2024-02-09 11:00:16');
+INSERT INTO reagents (id, reagent, instrument_id, added_by, update_by, created_at, updated_at) VALUES(7, 'OneStep hCG', 7, 1, 1, '2024-02-09 11:01:03', '2024-02-09 11:01:03');
+INSERT INTO reagents (id, reagent, instrument_id, added_by, update_by, created_at, updated_at) VALUES(8, 'Prechek Bio hCG', 7, 1, 1, '2024-02-09 11:01:17', '2024-02-09 11:01:17');
+INSERT INTO reagents (id, reagent, instrument_id, added_by, update_by, created_at, updated_at) VALUES(9, 'Abbot', 5, 1, 1, '2024-02-09 11:01:23', '2024-02-09 11:01:23');
+
+INSERT INTO units (id, unit, added_by, update_by, created_at, updated_at) VALUES(1, 'Qualitative', 1, 1, '2024-02-09 10:52:44', '2024-02-09 10:52:44');
+
+INSERT INTO tests (testcode, testname, reagent_id, method_id, unit_id, expected_result, low_range, high_range, added_by, update_by, created_at, updated_at) VALUES('HCG', 'Human chorionic gonadotrophin', 3, 1, 1, 'POSITIVE', 7.00, 8.90, 1, 1, '2024-02-09 15:36:53', '2024-02-09 15:36:53');
+INSERT INTO tests (testcode, testname, reagent_id, method_id, unit_id, expected_result, low_range, high_range, added_by, update_by, created_at, updated_at) VALUES('HCG', 'Human chorionic gonadotrophin', 5, 1, 1, 'POSITIVE', 7.00, 8.90, 1, 1, '2024-02-09 11:01:42', '2024-02-09 11:01:42');
+INSERT INTO tests (testcode, testname, reagent_id, method_id, unit_id, expected_result, low_range, high_range, added_by, update_by, created_at, updated_at) VALUES('HCG', 'Human chorionic gonadotrophin', 7, 1, 1, 'NEGATIVE', 7.00, 8.90, 1, 1, '2024-02-09 15:38:43', '2024-02-09 15:38:43');
+
+INSERT INTO assign_test (id, lab_id, prog_id, instrument_id, reagent_id, added_by, update_by, created_at, updated_at) VALUES(1, 1, 1, 6, 3, 2, 2, '2024-02-09 11:02:51', '2024-02-09 16:50:28');
+INSERT INTO assign_test (id, lab_id, prog_id, instrument_id, reagent_id, added_by, update_by, created_at, updated_at) VALUES(2, 2, 1, 7, 5, 2, 2, '2024-02-09 15:34:37', '2024-02-09 15:34:37');
+INSERT INTO assign_test (id, lab_id, prog_id, instrument_id, reagent_id, added_by, update_by, created_at, updated_at) VALUES(3, 3, 2, 6, 3, 2, 2, '2024-02-09 15:44:30', '2024-02-09 15:44:30');
+INSERT INTO assign_test (id, lab_id, prog_id, instrument_id, reagent_id, added_by, update_by, created_at, updated_at) VALUES(5, 1, 2, 6, 3, 2, 2, '2024-02-09 15:46:47', '2024-02-09 16:52:48');
+INSERT INTO assign_test (id, lab_id, prog_id, instrument_id, reagent_id, added_by, update_by, created_at, updated_at) VALUES(6, 2, 2, 7, 5, 2, 2, '2024-02-09 16:53:40', '2024-02-09 16:53:40');
+INSERT INTO assign_test (id, lab_id, prog_id, instrument_id, reagent_id, added_by, update_by, created_at, updated_at) VALUES(7, 3, 2, 6, 3, 2, 2, '2024-02-09 16:57:02', '2024-02-09 16:57:02');
+
+INSERT INTO subassigntest (assign_test_id, testcode, created_at, updated_at) VALUES(1, 'HCG', '2024-02-09 11:02:51', '2024-02-09 11:02:51');
+INSERT INTO subassigntest (assign_test_id, testcode, created_at, updated_at) VALUES(2, 'HCG', '2024-02-09 15:34:37', '2024-02-09 15:34:37');
+INSERT INTO subassigntest (assign_test_id, testcode, created_at, updated_at) VALUES(3, 'HCG', '2024-02-09 15:44:30', '2024-02-09 15:44:30');
+INSERT INTO subassigntest (assign_test_id, testcode, created_at, updated_at) VALUES(5, 'HCG', '2024-02-09 15:46:47', '2024-02-09 15:46:47');
+INSERT INTO subassigntest (assign_test_id, testcode, created_at, updated_at) VALUES(6, 'HCG', '2024-02-09 16:53:40', '2024-02-09 16:53:40');
+INSERT INTO subassigntest (assign_test_id, testcode, created_at, updated_at) VALUES(7, 'HCG', '2024-02-09 16:57:02', '2024-02-09 16:57:02');
+
+
+
