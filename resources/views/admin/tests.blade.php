@@ -55,6 +55,24 @@
                 </select>
             </div>
 
+            <div class="mb-3">
+                <label for="expected_result" class="col-form-label">Expected Result:</label>
+                <select name="expected_result" class="form-control" id="expected_result">
+                    <option value="POSITIVE">POSITIVE</option>
+                    <option value="NEGATIVE">NEGATIVE</option>
+                </select>
+            </div>z
+
+            <div class="mb-3">
+                <label for="low_range" class="col-form-label">Low Range:</label>
+                <input type="text" name="low_range" class="form-control" id="low_range">
+              </div>
+
+            <div class="mb-3">
+                <label for="high_range" class="col-form-label">High Range:</label>
+                <input type="text" name="high_range" class="form-control" id="high_range">
+              </div>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">CLOSE</button>
@@ -123,6 +141,9 @@
                 <th class="w-10p">Reagent</th>
                 <th class="w-10p">Method</th>
                 <th class="w-10p">Unit</th>
+                <th class="w-10p">Low Range</th>
+                <th class="w-10p">High Range</th>
+                <th class="w-10p">Expected Result</th>
                 <th class="w-10p" style="text-align: center;">ACTIONS</th>
               </thead>
               <tbody>
@@ -151,6 +172,9 @@
                         No Unit
                     @endif
                   </td>
+                <td>{{ $data->expected_result }}</td>
+                  <td>{{ $data->low_range }}</td>
+                  <td>{{ $data->high_range }}</td>
                   <td style="display: flex; justify-content: center;">
                 <a href="{{ url('tests/'.$data->testcode)}}" class="btn btn-success">
                     <i class="fas fa-pen"></i></a>&nbsp;&nbsp;

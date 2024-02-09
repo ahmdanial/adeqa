@@ -19,6 +19,9 @@ class CreateTestsTable extends Migration
             $table->unsignedBigInteger('reagent_id')->nullable();
             $table->unsignedBigInteger('method_id')->nullable();
             $table->unsignedBigInteger('unit_id')->nullable();
+            $table->string('expected_result')->nullable();
+            $table->float('low_range')->nullable();
+            $table->float('high_range')->nullable();
             $table->unsignedBigInteger('added_by')->nullable();
             $table->unsignedBigInteger('update_by')->nullable();
             $table->timestamps();

@@ -23,11 +23,6 @@ class SubAssignTest extends Model
         return $this->belongsTo(AssignTest::class);
     }
 
-    public function method()
-    {
-        return $this->belongsTo(Method::class, 'testcode', 'testcode');
-    }
-
     public function test()
     {
         return $this->belongsTo(Test::class, 'testcode');

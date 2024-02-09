@@ -11,31 +11,8 @@
             <div class="card-header">
                 <h4 class="card-title">DATA ENTRY</h4>
                 <br>
-                <?php
-                $conn = new mysqli("localhost", "root", "","adeqa");
 
-                $labid = $_GET['lab_id'];
-                $progid = $_GET['prog_id'];
-                $instrument = $_GET['instrument_id'];
-                $reagent = $_GET['reagent_id'];
-
-                $sql = "SELECT id FROM assign_test WHERE lab_id = '$labid' AND prog_id = '$progid' AND instrument_id = '$instrument'
-                AND reagent_id = '$reagent'";
-                $result = $conn->query($sql);
-                $row = $result->fetch_object();
-                $assignTestID = $row->id;
-
-                echo $assignTestID;
-
-                $sql2 = "SELECT testcode FROM subassigntest WHERE assign_test_id = '$assignTestID'";
-                $result2 = $conn->query($sql2);
-                while($row2 = $result2 -> fetch_object()){
-                    $testcode1 = $row2->testcode;
-                    echo $testcode1;
-                }
-                ?>
-
-                <form action="{{ route('entry-results.store', ['assignTestId' => $assignTestId]) }}" method="POST">
+                <form action="/save-entry-results" method="POST">
                     @csrf
 
                     <style>
@@ -102,10 +79,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($testCodes as $testcode)
-                                <?php $subAssignTest = $subAssignTests->where('testcode', $testcode)->first(); ?>
+                            @foreach($testcodes as $testcode)
                                 <tr>
-                                    <td>{{ $subAssignTest->testcode }}</td>
+                                    <td>{{ $testcode->testname }}</td>
                                     @if (isset($methodDetails[$subAssignTest->testcode]->method))
                                         <td>{{ $methodDetails[$subAssignTest->testcode]->methodname }}</td>
                                     @endif

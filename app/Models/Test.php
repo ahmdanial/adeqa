@@ -21,6 +21,9 @@ class Test extends Model
         'reagent_id',
         'method_id',
         'unit_id',
+        'expected_result',
+        'low_range',
+        'high_range',
         'added_by',
         'update_by',
     ];

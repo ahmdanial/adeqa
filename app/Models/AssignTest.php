@@ -60,7 +60,7 @@ class AssignTest extends Model
 
     public function reagent()
     {
-        return $this->belongsTo(Method::class, 'reagent_id');
+        return $this->belongsTo(Reagent::class, 'reagent_id');
     }
 
      public function addedBy()

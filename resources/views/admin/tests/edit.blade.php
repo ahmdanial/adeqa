@@ -59,6 +59,24 @@
                         </select>
                     </div>
 
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Expected Result:</label>
+                        <select type="text" name="expected_result" class="form-control" value="{{ $test->expected_result }}">
+                            <option value="POSITIVE">POSITIVE</option>
+                            <option value="NEGATIVE">NEGATIVE</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Low Range:</label>
+                        <input type="text" name="low_range" class="form-control" value="{{ $test->low_range }}">
+                      </div>
+
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">High Range:</label>
+                        <input type="text" name="high_range" class="form-control" value="{{ $test->high_range }}">
+                      </div>
+
                 </div>
                 <div class="modal-footer">
                   <a href="{{ url('tests') }}" class="btn btn-primary">BACK</a>

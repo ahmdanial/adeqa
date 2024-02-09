@@ -18,89 +18,40 @@ class DataEntryController extends Controller
 {
 
     public function index()
-    {
-        // Fetch all AssignTests (you might adjust this query based on your actual data structure)
-        $assignTests = AssignTest::all();
+        {
+        $assignTests = AssignTest::with(['lab', 'program', 'instrument', 'reagent'])->get();
 
-        // Fetch the methodDetails for the first AssignTest (you might adjust this query based on your actual data structure)
-        $assignTestId = $assignTests->id ?? null;
-
-        // Fetch other data based on the obtained $assignTestId
-        $entryResults = EntryResult::all();
-        $methodDetails = Method::find($assignTestId);
-        $reagents = Reagent::all();
-
-        return view('user.entry-results', compact('entryResults', 'assignTests', 'assignTestId', 'methodDetails', 'reagents'));
-    }
-
-    public function getAssignTestId(Request $request)
-    {
-        $labId = $request->input('lab_id');
-        $progId = $request->input('prog_id');
-        $instrumentId = $request->input('instrument_id');
-        $reagentId = $request->input('reagent_id');
-
-        // Now, filter the Subassigntest based on lab_id, prog_id, instrument_id, and reagent_id
-        $subAssignTest = SubAssignTest::whereHas('assignTest', function ($query) use ($labId, $progId, $instrumentId, $reagentId) {
-            $query->where([
-                'lab_id' => $labId,
-                'prog_id' => $progId,
-                'instrument_id' => $instrumentId,
-                'reagent_id' => $reagentId,
-            ]);
-        })->first();
-
-        if ($subAssignTest) {
-            $assignTestId = $subAssignTest->assign_test_id;
-
-            // Redirect to the page showing the listing of testcodes
-            return redirect()->route('entry-results.showEntryResults', ['assignTestId' => $assignTestId, 'reagentId' => $reagentId]);
-        } else {
-            // Handle error, maybe redirect back with an error message
-            return redirect()->back()->with('error', 'AssignTestId not found for the given parameters.');
+            return view('user.entry-results', compact('assignTests'));
         }
-    }
 
-    public function showEntryResults($assignTestId)
-    {
-        $subAssignTests = SubAssignTest::where('assign_test_id', $assignTestId)->get();
+        public function show(Request $request)
+        {
+            $lab_id = $request->lab_id;
+            $prog_id = $request->prog_id;
+            $instrument_id = $request->instrument_id;
+            $reagent_id = $request->reagent_id;
 
-        // Fetch values of lab_id, prog_id, instrument_id, and reagent_id
-        $assignTest = AssignTest::with('subAssignTests')
-            ->find($assignTestId);
+            $assignTest = AssignTest::with(['lab', 'program', 'instrument', 'reagent'])->get()
+                ->where('lab_id','=',$lab_id)
+                ->where('prog_id','=',$prog_id)
+                ->where('instrument_id','=',$instrument_id)
+                ->where('reagent_id','=',$reagent_id)
+                ->first();
 
-        // Fetch test codes from subassigntest based on assignTest relationship
-        $testCodes = $assignTest->subAssignTests->pluck('testcode');
+            $assignTestId = SubAssignTest::where('assign_test_id',$assignTest)->get();
 
-        // Fetch method details based on the test codes
-        $methodDetails = Method::whereIn('testcode', $testCodes)
-            ->pluck('methodname', 'testcode')
-            ->toArray();
+            $testcodes = SubAssignTest::where('assign_test_id', $assignTestId)->get()->toArray();
 
-        // Fetch reagent details using the query
-        $reagentDetails = DB::table('methods as A')
-            ->select('A.reagent_id', 'B.reagent')
-            ->join('reagents as B', 'A.reagent_id', '=', 'B.id')
-            ->whereIn('A.testcode', $testCodes)
-            ->get();
-
-        // Extract unique reagent IDs if needed
-        $uniqueReagentIds = $reagentDetails->pluck('reagent_id')->unique()->toArray();
-
-        // Pass data to the view
-        return view('user.show', [
-            'assignTest' => $assignTest,
-            'testCodes' => $testCodes,
-            'subAssignTests' => $subAssignTests, // Add this line to pass subAssignTests to the view
-            'lab_id' => $assignTest->lab_id,
-            'prog_id' => $assignTest->prog_id,
-            'instrument_id' => $assignTest->instrument_id,
-            'assignTestId' => $assignTestId,
-            'methodDetails' => $methodDetails,
-            'reagentDetails' => $reagentDetails,
-            'reagentId' => $uniqueReagentIds,
-        ]);
-    }
+            return view('user.show', compact(
+                'assignTest',
+                'testcodes',
+                'lab_id',
+                'prog_id',
+                'instrument_id',
+                'reagent_id',
+                'assignTestId'
+            ));
+        }
 
 
     public function store(Request $request, $assignTestId)

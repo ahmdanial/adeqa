@@ -32,6 +32,9 @@ class TestController extends Controller
         $test->reagent_id = $request->input('reagent_id');
         $test->method_id = $request->input('method_id');
         $test->unit_id = $request->input('unit_id');
+        $test->expected_result = $request->input('expected_result');
+        $test->low_range = $request->input('low_range');
+        $test->high_range = $request->input('high_range');
         $test->added_by = auth()->user()->id;
         $test->update_by = auth()->user()->id;
 
@@ -71,6 +74,9 @@ class TestController extends Controller
             $test->reagent_id = $request->input('reagent_id');
             $test->method_id = $request->input('method_id');
             $test->unit_id = $request->input('unit_id');
+            $test->expected_result = $request->input('expected_result');
+            $test->low_range = $request->input('low_range');
+            $test->high_range = $request->input('high_range');
 
             $test->update_by = auth()->user()->id;
             $test->update();

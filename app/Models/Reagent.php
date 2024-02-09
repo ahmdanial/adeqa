@@ -21,7 +21,7 @@ class Reagent extends Model
     // Relationships
     public function instrument()
     {
-        return $this->belongsTo(Instrument::class);
+        return $this->belongsTo(Instrument::class, 'instrument_id', 'id');
     }
 
     public function addedBy()
@@ -38,4 +38,5 @@ class Reagent extends Model
     {
         return $this->hasMany(Test::class);
     }
+
 }
