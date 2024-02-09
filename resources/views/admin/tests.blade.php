@@ -61,7 +61,7 @@
                     <option value="POSITIVE">POSITIVE</option>
                     <option value="NEGATIVE">NEGATIVE</option>
                 </select>
-            </div>z
+            </div>
 
             <div class="mb-3">
                 <label for="low_range" class="col-form-label">Low Range:</label>

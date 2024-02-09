@@ -22,7 +22,7 @@ class CreateReagentsTable extends Migration
             $table->timestamps();
 
             // Foreign key constraints
-            $table->foreign('instrument_id')->references('id')->on('instruments');
+            $table->foreign('instrument_id')->references('id')->on('instruments')->onDelete('restrict')->onUpdate('cascade');
             $table->foreign('added_by')->references('id')->on('users')->onDelete('set null');
             $table->foreign('update_by')->references('id')->on('users')->onDelete('set null');
         });

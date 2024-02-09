@@ -16,7 +16,7 @@ class CreateAssigntestTable extends Migration
     {
         Schema::create('assign_test', function (Blueprint $table) {
             $table->id(); // Auto-incrementing primary key
-            $table->unsignedBigInteger('lab_id')->unique();
+            $table->unsignedBigInteger('lab_id');
             $table->unsignedBigInteger('prog_id');
             $table->unsignedBigInteger('instrument_id');
             $table->unsignedBigInteger('reagent_id');

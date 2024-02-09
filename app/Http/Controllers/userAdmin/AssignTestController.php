@@ -22,6 +22,7 @@ class AssignTestController extends Controller
     public function index()
     {
         $assignTests = AssignTest::all();
+        $subAssignTests = SubAssignTest::all();
         $departments = Department::all();
         $programs = Program::all();
         $labs = Lab::all();
@@ -30,7 +31,7 @@ class AssignTestController extends Controller
         $methods = Method::all();
         $reagents = Reagent::all();
 
-        return view('useradmin.assign-tests', compact('departments', 'assignTests', 'programs', 'labs', 'instruments', 'tests','methods','reagents' ));
+        return view('useradmin.assign-tests', compact('departments', 'assignTests', 'programs', 'labs', 'instruments', 'tests','methods','reagents','subAssignTests' ));
     }
 
     public function fetchInstruments(Request $request)

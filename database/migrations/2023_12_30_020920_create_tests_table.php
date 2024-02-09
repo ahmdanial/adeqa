@@ -14,7 +14,7 @@ class CreateTestsTable extends Migration
     public function up()
     {
         Schema::create('tests', function (Blueprint $table) {
-            $table->string('testcode', 255)->primary();
+            $table->string('testcode', 255);
             $table->string('testname')->nullable();
             $table->unsignedBigInteger('reagent_id')->nullable();
             $table->unsignedBigInteger('method_id')->nullable();
@@ -25,6 +25,8 @@ class CreateTestsTable extends Migration
             $table->unsignedBigInteger('added_by')->nullable();
             $table->unsignedBigInteger('update_by')->nullable();
             $table->timestamps();
+
+            $table->primary(['testcode', 'reagent_id']);
 
             // Foreign key constraints
             $table->foreign('reagent_id')->references('id')->on('reagents')->onDelete('cascade');

@@ -161,10 +161,11 @@
           <div class="table-responsive">
             <table id="datatable" class="table">
               <thead class=" text-primary">
-                <th class="w-1p">ID </th>
+
                 <th class="w-10p">Lab</th>
                 <th class="w-10p">Program </th>
                 <th class="w-10p">Instrument </th>
+                <th class="w-10p">Reagent </th>
                 <th class="w-10p">Test </th>
 
                 {{-- <th class="w-10p">Added By</th>
@@ -172,68 +173,46 @@
                 <th class="w-10p" style="text-align: center;">ACTIONS</th>
               </thead>
               <tbody>
-                @foreach ($assignTests as $data)
+                {{--@foreach ($subAssignTests as $data)--}}
+                <?php
+                $conn = new mysqli("localhost", "root", "","adeqa");
+
+                $sql = "SELECT A.id,B.labname,C.programname,D.instrumentname,E.testname,G.reagent
+                        FROM assign_test A, labs B, programs C, instruments D, tests E, subassigntest F, reagents G
+                        WHERE A.lab_id = B.id AND A.prog_id = C.id AND A.instrument_id = D.id
+                        AND F.testcode = E.testcode AND A.id = F.assign_test_id AND B.department_id=D.department_id
+                        AND A.reagent_id = G.id
+                        group by A.id,B.labname,C.programname,D.instrumentname,E.testname,G.reagent
+                        order by A.id;";
+                $result = $conn->query($sql);
+
+                while($row = $result -> fetch_object()){
+                    $assignTestID = $row->id;
+                    $labname = $row->labname;
+                    $progname = $row->programname;
+                    $instrumentname = $row->instrumentname;
+                    $testname = $row->testname;
+                    $reagent = $row->reagent;
+
+                ?>
                 <tr>
-                  <td>{{ $data->id }}</td>
 
-                  <td>
-                      @if ($data->lab)
-                      {{ $data->lab->labname}}
-                      @else
-                          No User
-                      @endif
-                  </td>
-
-                    <td>
-                        @if ($data->program)
-                        {{ $data->program->programname}}
-                        @else
-                            No User
-                        @endif
-                    </td>
-
-                    <td>
-                        @if ($data->instrument)
-                        {{ $data->instrument->instrumentname}}
-                        @else
-                            No User
-                        @endif
-                    </td>
-
-                    <td>
-                        @foreach($data->tests as $test)
-                            {{ $test->testname }}
-                            @if(!$loop->last) {{-- Add line break if not the last item --}}
-                                <br>
-                            @endif
-                        @endforeach
-                    </td>
-
-
-                  {{--<td>
-                    @if ($data->addedBy)
-                        {{ $data->addedBy->username }}
-                    @else
-                        N/A
-                    @endif
-                </td>
-
-                <td>
-                    @if ($data->updateBy)
-                        {{ $data->updateBy->username }}
-                    @else
-                        N/A
-                    @endif
-                </td>--}}
-
-                <td style="display: flex; justify-content: center;">
-                    <a href="{{ url('assign-tests/'.$data->id)}}" class="btn btn-success">
+                  <td> {{$labname}}</td>
+                  <td> {{$progname}}</td>
+                  <td> {{$instrumentname}}</td>
+                  <td> {{$reagent}}</td>
+                  <td> {{$testname}}</td>
+                  <td style="display: flex; justify-content: center;">
+                    <a href="{{ url('assign-tests/'.$assignTestID)}}" class="btn btn-success">
                         <i class="fas fa-pen"></i></a>&nbsp;&nbsp;
                     <a href="javascript:void(0)" class="btn btn-danger deletebtn">
                         <i class="fas fa-trash"></i></a>
                 </td>
                 </tr>
-                @endforeach
+                <?php
+                }
+                ?>
+
               </tbody>
             </table>
           </div>

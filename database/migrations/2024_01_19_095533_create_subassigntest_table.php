@@ -18,9 +18,11 @@ class CreateSubassigntestTable extends Migration
             $table->string('testcode', 255);
             $table->timestamps();
 
+            $table->primary(['assign_test_id', 'testcode']);
+
             // Foreign Key Constraints
-            $table->foreign('assign_test_id')->references('id')->on('assign_test')->onDelete('cascade');
-            $table->foreign('testcode')->references('testcode')->on('tests')->onDelete('cascade');
+            $table->foreign('assign_test_id')->references('id')->on('assign_test')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreign('testcode')->references('testcode')->on('tests')->onDelete('restrict')->onUpdate('cascade');
         });
     }
 
