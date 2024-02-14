@@ -101,6 +101,14 @@
                 </a>
             </li>
 
+            <li>
+                <li class="{{ 'assign-instruments' == request()->path() ? 'active' : '' }}">
+                <a href={{ url('assign-instruments') }}>
+                    <i class="now-ui-icons loader_gear"></i>
+                    <p>Assign Instrument </p>
+                </a>
+            </li>
+
             @php
             use Illuminate\Support\Str;
             @endphp

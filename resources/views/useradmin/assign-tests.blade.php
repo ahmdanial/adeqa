@@ -123,7 +123,7 @@
                 {{ method_field('DELETE') }}
 
                 <div class="modal-body">
-                    <input type="hidden" id="delete_assignuser_id">
+                    <input type="hidden" id="delete_assigninstrument_id">
                     <h5>Are you sure you want to delete this Assign Test ?</h5>
                 </div>
                 <div class="modal-footer">
@@ -224,7 +224,7 @@
 
                 //console.log(data);
 
-                $('#delete_assignuser_id').val(data[0]);
+                $('#delete_assigninstrument_id').val(data[0]);
 
                 $('#delete_modal_Form').attr('action', '/assign-tests-delete/' + data[0].trim());
 

@@ -91,6 +91,12 @@ Route::group(['middleware' => ['superadmin']], function () {
     Route::put('/methods-update/{id}', [App\Http\Controllers\Admin\MethodController::class, 'update']);
     Route::delete('methods-delete/{id}', [App\Http\Controllers\Admin\MethodController::class, 'delete']);
 
+    Route::get('/assign-instruments', [App\Http\Controllers\Admin\AssignInstrumentController::class, 'index']);
+    Route::post('/save-assign-instruments', [App\Http\Controllers\Admin\AssignInstrumentController::class, 'store']);
+    Route::get('/assign-instruments/{id}', [App\Http\Controllers\Admin\AssignInstrumentController::class, 'edit']);
+    Route::put('/assign-instruments-update/{id}', [App\Http\Controllers\Admin\AssignInstrumentController::class, 'update']);
+    Route::delete('assign-instruments-delete/{id}', [App\Http\Controllers\Admin\AssignInstrumentController::class, 'delete']);
+
 });
 
 Route::group(['middleware' => ['admin:1']], function () {

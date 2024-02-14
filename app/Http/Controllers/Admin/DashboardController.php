@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Institution;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -12,8 +13,9 @@ class DashboardController extends Controller
     public function registered()
     {
         $users = User::all();
+        $institutions = Institution::all();
 
-        return view('admin.register', compact('users'));
+        return view('admin.register', compact('users','institutions'));
     }
 
     public function registerstore(Request $request)

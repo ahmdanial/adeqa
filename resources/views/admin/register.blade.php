@@ -40,7 +40,11 @@
 
             <div class="mb-3">
                 <label for="recipient-name" class="col-form-label">Institution:</label>
-                    <input type="text" name="institution" class="form-control" id="recipient-name">
+                <select name="institution_id" class="form-control" id="institution_id">
+                    @foreach($institutions as $inst)
+                        <option value="{{ $inst->id }}">{{ $inst->institution }}</option>
+                    @endforeach
+                </select>
             </div>
 
             <div class="mb-3">
@@ -87,8 +91,8 @@
                 {{ method_field('DELETE') }}
 
                 <div class="modal-body">
-                    <input type="hidden" id="delete_assignuser_id">
-                    <h5>Are you sure you want to delete this Assign User ?</h5>
+                    <input type="hidden" id="delete_assigninstrument_id">
+                    <h5>Are you sure you want to delete this Assign Instrument ?</h5>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -6,11 +6,11 @@ use App\Models\AssignTest;
 use App\Models\Program;
 use App\Models\Lab;
 use App\Models\Instrument;
-use App\Models\Test;
-use App\Models\Method;
 use App\Models\Reagent;
 use App\Models\Institution;
 use App\Models\SubAssignTest;
+use App\Models\AssignInstrument;
+
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -37,8 +37,16 @@ class AssignTestController extends Controller
 
         if (!empty($value)) {
             // Assuming you have a relationship between Institution and Instrument
-            $instrumentsData = Instrument::where('institution_id', $value)->pluck('instrumentname', 'id');
-            return response()->json(['instruments' => $instrumentsData]);
+            $instrumentsData = AssignInstrument::where('institution_id', $value)->pluck('instrument_id', 'id');
+            // Get the instrument names using the instrument_ids
+            $instrumentNames = [];
+            foreach ($instrumentsData as $id => $instrument_id) {
+                $instrument = Instrument::find($instrument_id);
+                if ($instrument) {
+                    $instrumentNames[$id] = $instrument->instrumentname;
+                }
+            }
+        return response()->json(['instruments' => $instrumentNames]);
         }
 
         return response()->json([]);

@@ -30,7 +30,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Institution</label>
-                                <input type="text" name="username" value="{{ $users->institution_id }}" class="form-control">
+                                <input type="text" name="username" value="{{ $users->institution->institution }}" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
