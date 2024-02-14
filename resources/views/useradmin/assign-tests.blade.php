@@ -24,11 +24,14 @@
                         <div class="col-sm-9">
                             <select name="lab_id" class="form-control" id="lab_id">
                                 @foreach($labs as $lab)
-                                <option value="{{ $lab->id }}">{{ $lab->labname }}</option>
+                                    @if($lab->institution_id == Auth::user()->institution_id)
+                                        <option value="{{ $lab->id }}">{{ $lab->labname }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
                     </div>
+
 
                     <div class="mb-3 row">
                         <label for="prog_id" class="col-sm-3 col-form-label">Program:</label>
@@ -59,7 +62,7 @@
                         <div class="col-sm-9">
                             <select name="instrument_id" class="form-control dynamic" id="instrument_id" data-dependent="reagent_id" disabled>
                                 <option>-- Select instrument id --</option>
-                                @foreach($instruments as $inst)
+                                @foreach($assignTests as $inst)
                                     <option value="{{ $inst->id }}">{{ $inst->instrumentname }}</option>
                                     @endforeach
                             </select>
@@ -71,7 +74,7 @@
                         <div class="col-sm-9">
                             <select name="reagent_id" class="form-control dynamic" id="reagent_id" data-dependent="testcode" disabled>
                                 <option>-- Select reagent id --</option>
-                                @foreach($reagents as $reag)
+                                @foreach($assignTests as $reag)
                                     <option value="{{ $reag->id }}">{{ $reag->reagent }}</option>
                                     @endforeach
                             </select>
@@ -82,7 +85,7 @@
                         <label for="testcode" class="col-sm-3 col-form-label">Test:</label>
                         <div id="testcode-container" class="col-sm-9" style="display: none;">
                             <div class="row">
-                                @foreach($tests as $test)
+                                @foreach($assignTests as $test)
                                     <div class="col-sm-6">
                                         <div class="form-check1">
                                             <input type="checkbox" class="form-check-input1" name="testcodes[]" value="{{ $test->testcode }}" id="test_{{ $test->testcode }}" {{ in_array($test->testcode, old('testcodes', [])) ? 'checked' : '' }}>
@@ -173,47 +176,31 @@
                 <th class="w-10p" style="text-align: center;">ACTIONS</th>
               </thead>
               <tbody>
-                {{--@foreach ($subAssignTests as $data)--}}
-                <?php
-                $conn = new mysqli("localhost", "root", "","adeqa");
-
-                $sql = "SELECT A.id,B.labname,C.programname,D.instrumentname,E.testname,G.reagent
-                        FROM assign_test A, labs B, programs C, instruments D, tests E, subassigntest F, reagents G
-                        WHERE A.lab_id = B.id AND A.prog_id = C.id AND A.instrument_id = D.id
-                        AND F.testcode = E.testcode AND A.id = F.assign_test_id AND B.institution_id=D.institution_id
-                        AND A.reagent_id = G.id
-                        group by A.id,B.labname,C.programname,D.instrumentname,E.testname,G.reagent
-                        order by A.id;";
-                $result = $conn->query($sql);
-
-                while($row = $result -> fetch_object()){
-                    $assignTestID = $row->id;
-                    $labname = $row->labname;
-                    $progname = $row->programname;
-                    $instrumentname = $row->instrumentname;
-                    $testname = $row->testname;
-                    $reagent = $row->reagent;
-
-                ?>
-                <tr>
-
-                  <td> {{$labname}}</td>
-                  <td> {{$progname}}</td>
-                  <td> {{$instrumentname}}</td>
-                  <td> {{$reagent}}</td>
-                  <td> {{$testname}}</td>
-                  <td style="display: flex; justify-content: center;">
-                    <a href="{{ url('assign-tests/'.$assignTestID)}}" class="btn btn-success">
-                        <i class="fas fa-pen"></i></a>&nbsp;&nbsp;
-                    <a href="javascript:void(0)" class="btn btn-danger deletebtn">
-                        <i class="fas fa-trash"></i></a>
-                </td>
-                </tr>
-                <?php
-                }
-                ?>
-
-              </tbody>
+                @foreach ($assignTests as $assignTest)
+                    @if ($assignTest->added_by == auth()->user()->id)
+                        <tr>
+                            <td>{{ $assignTest->lab->labname }}</td>
+                            <td>{{ $assignTest->program->programname }}</td>
+                            <td>{{ $assignTest->instrument->instrumentname }}</td>
+                            <td>{{ $assignTest->reagent->reagent }}</td>
+                            <td>
+                                @foreach ($assignTest->subassigntests as $subAssignTest)
+                                    {{ $subAssignTest->test->testname }}
+                                    @if (!$loop->last)
+                                        ,
+                                    @endif
+                                @endforeach
+                            </td>
+                            <td style="display: flex; justify-content: center;">
+                                <a href="{{ url('assign-tests/'.$assignTest->id)}}" class="btn btn-success">
+                                    <i class="fas fa-pen"></i></a>&nbsp;&nbsp;
+                                <a href="javascript:void(0)" class="btn btn-danger deletebtn">
+                                    <i class="fas fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    @endif
+                @endforeach
+            </tbody>
             </table>
           </div>
         </div>
@@ -239,7 +226,7 @@
 
                 $('#delete_assignuser_id').val(data[0]);
 
-                $('#delete_modal_Form').attr('action', '/assign-tests-delete/'+data[0]);
+                $('#delete_modal_Form').attr('action', '/assign-tests-delete/' + data[0].trim());
 
                 $('#deletemodalpop').modal('show');
             });

@@ -43,7 +43,7 @@ class AssignTest extends Model
         return $this->belongsTo(Instrument::class, 'instrument_id');
     }
 
-    public function tests()
+    public function test()
     {
         return $this->belongsToMany(Test::class, 'subassigntest', 'assign_test_id', 'testcode');
     }

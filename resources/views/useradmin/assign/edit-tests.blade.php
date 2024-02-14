@@ -1,7 +1,7 @@
 @extends("layouts.admin")
 
 @section('title')
-    Assign Test - Edit | ADEQA
+    Edit - Assign Test  | ADEQA
 @endsection
 
 @section('content')
@@ -10,7 +10,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-              <h4 class="card-title">EDIT ASSIGN TEST </h4>
+              <h4 class="card-title">EDIT - ASSIGN TEST </h4>
 
               <form action="{{ url('assign-tests-update/'.$assignTest->id) }}" method="POST">
                 {{ csrf_field() }}

@@ -55,7 +55,7 @@
       <div class="sidebar-wrapper" id="sidebar-wrapper">
         <ul class="nav">
         <li class="{{ 'assign-tests' == request()->path() ? 'active' : '' }}">
-            <a href="./assign-tests">
+            <a href={{ url('assign-tests') }}>
                 <i class="now-ui-icons loader_gear"></i>
                 <p>Assign Tests</p>
             </a>

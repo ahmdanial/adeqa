@@ -9,45 +9,29 @@ use Illuminate\Support\Facades\Auth; // add this line to the top of the file
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
     use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
     protected $redirectTo = RouteServiceProvider::HOME;
+
     protected function redirectTo()
     {
-        $userRoles = Auth::user()->roles;
+        $user = Auth::user();
 
-        if ($userRoles == 'superadmin') {
+        if ($user->roles == 'superadmin') {
             return 'user-register';
-        } elseif ($userRoles == 'admin') {
-            return 'assign-tests';
-        } elseif ($userRoles == 'user') {
+        } elseif ($user->roles == 'admin') {
+            // Add logic to retrieve the user's institution_id
+            $institutionId = $user->institution_id;
+
+            // Redirect to 'assign-tests' only if institution_id is present
+            return $institutionId ? 'assign-tests' : 'home';
+        } elseif ($user->roles == 'user') {
             return 'entry-results';
         } else {
             return 'home';
         }
     }
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest')->except('logout');

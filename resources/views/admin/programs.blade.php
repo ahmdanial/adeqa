@@ -96,8 +96,8 @@
           <div class="table-responsive">
             <table id="datatable" class="table">
               <thead class=" text-primary">
-                <th class="w-10p">ID Programme</th>
-                <th class="w-10p">Programme Name</th>
+                <th class="w-10p">ID Program</th>
+                <th class="w-10p">Program Name</th>
                 <th class="w-10p">Open Date</th>
                 <th class="w-10p">Close Date</th>
                 <th class="w-10p" style="text-align: center;">ACTIONS</th>

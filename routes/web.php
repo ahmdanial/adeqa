@@ -93,22 +93,25 @@ Route::group(['middleware' => ['superadmin']], function () {
 
 });
 
-Route::group(['middleware' => ['admin']], function () {
-    Route::get('assign-tests', function () {
+Route::group(['middleware' => ['admin:1']], function () {
+    // Define a common closure for the routes
+    $assignTestsRoutes = function () {
         return view('useradmin.assign-tests');
-    });
+    };
 
+    // Use the common closure for both GET and POST routes
+    Route::get('assign-tests', $assignTestsRoutes);
+    Route::post('assign-tests', $assignTestsRoutes);
+
+    // Other routes with institution_id check
     Route::get('assign-tests', [AssignTestController::class, 'index']);
-
     Route::post('/fetch-instruments', [AssignTestController::class, 'fetchInstruments'])->name('assign-tests.fetchInstruments');
     Route::post('/fetch-reagents', [AssignTestController::class, 'fetchReagents'])->name('assign-tests.fetchReagents');
     Route::post('/fetch-testcodes', [AssignTestController::class, 'fetchTestCodes'])->name('assign-tests.fetchTestCodes');
-
     Route::post('/save-assign-tests', [AssignTestController::class, 'store']);
     Route::get('/assign-tests/{id}', [AssignTestController::class, 'edit']);
     Route::put('/assign-tests-update/{id}', [AssignTestController::class, 'update']);
     Route::delete('/assign-tests-delete/{id}', [AssignTestController::class, 'delete']);
-
 });
 
 Route::group(['middleware' => ['user']], function () {

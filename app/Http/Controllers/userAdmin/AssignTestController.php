@@ -21,17 +21,14 @@ class AssignTestController extends Controller
 {
     public function index()
     {
-        $assignTests = AssignTest::all();
-        $subAssignTests = SubAssignTest::all();
+        $labs = Lab::all();
         $institutions = Institution::all();
         $programs = Program::all();
-        $labs = Lab::all();
-        $instruments = Instrument::all();
-        $tests = Test::all();
-        $methods = Method::all();
-        $reagents = Reagent::all();
+        $assignTests = AssignTest::with(['lab', 'program', 'instrument', 'reagent', 'test'])
+        ->where('added_by', auth()->user()->id)
+        ->get();
 
-        return view('useradmin.assign-tests', compact('institutions', 'assignTests', 'programs', 'labs', 'instruments', 'tests','methods','reagents','subAssignTests' ));
+        return view('useradmin.assign-tests', compact('assignTests', 'labs', 'institutions', 'programs'));
     }
 
     public function fetchInstruments(Request $request)
