@@ -19,9 +19,9 @@ class Reagent extends Model
     ];
 
     // Relationships
-    public function instrument()
+    public function assignInstrument()
     {
-        return $this->belongsTo(Instrument::class, 'instrument_id', 'id');
+        return $this->belongsTo(AssignInstrument::class, 'instrument_id', 'id');
     }
 
     public function addedBy()

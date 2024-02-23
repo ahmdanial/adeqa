@@ -25,9 +25,9 @@
 
             <div class="mb-3">
                 <label for="recipient-name" class="col-form-label">Instrument:</label>
-                <select name="instrument_id" class="form-control" id="instrument">
-                    @foreach($instrument as $inst)
-                        <option value="{{ $inst->id }}">{{ $inst->instrumentname }}</option>
+                <select name="instrument_id" class="form-control" id="instrument_id">
+                    @foreach($assignInstruments as $inst)
+                        <option value="{{ $inst->id }}">{{ $inst->instrument->instrumentname }}</option>
                     @endforeach
                 </select>
             </div>
@@ -103,13 +103,13 @@
                 <th class="w-10p" style="text-align: center;">ACTIONS</th>
               </thead>
               <tbody>
-                @foreach ($reagent as $data)
+                @foreach ($reagents as $data)
                 <tr>
                   <td>{{ $data->id }}</td>
                   <td>{{ $data->reagent }}</td>
                   <td>
-                    @if ($data->instrument)
-                        {{ $data->instrument->instrumentname}}
+                    @if ($data->assignInstrument)
+                        {{ $data->assignInstrument->instrument->instrumentname}}
                     @else
                         No Instrument
                     @endif

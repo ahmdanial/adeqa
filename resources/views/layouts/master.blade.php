@@ -52,6 +52,9 @@
 
       </div>
       <div class="sidebar-wrapper" id="sidebar-wrapper">
+        @php
+            use Illuminate\Support\Str;
+            @endphp
         <ul class="nav">
 
             <li class="{{ 'institutions' == request()->path() ? 'active' : '' }}">
@@ -85,12 +88,21 @@
                 </a>
             </li>
 
-            <li>
-                <li class="{{ 'instruments' == request()->path() ? 'active' : '' }}">
-                <a href={{ url('instruments') }}>
+            <li class="{{ Str::startsWith(request()->path(), 'instruments') ? 'active dropdown' : '' }}">
+                <a href="#" data-toggle="collapse" data-target="#setupDropdown">
                     <i class="now-ui-icons business_briefcase-24"></i>
                     <p>Instrument Setup</p>
                 </a>
+                <ul class="collapse list-unstyled" id="setupDropdown">
+                    @foreach(['assign-instruments'] as $item)
+                        <li class="{{ $item == request()->path() ? 'active' : '' }}">
+                            <a href="{{ url($item) }}" style="padding-left: 30px;">
+                                <i class="now-ui-icons loader_gear"></i>
+                                <p>{{ ucfirst($item) }}</p>
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
             </li>
 
             <li>
@@ -101,24 +113,13 @@
                 </a>
             </li>
 
-            <li>
-                <li class="{{ 'assign-instruments' == request()->path() ? 'active' : '' }}">
-                <a href={{ url('assign-instruments') }}>
-                    <i class="now-ui-icons loader_gear"></i>
-                    <p>Assign Instrument </p>
-                </a>
-            </li>
-
-            @php
-            use Illuminate\Support\Str;
-            @endphp
 
             <li class="{{ Str::startsWith(request()->path(), 'test-setup') ? 'active dropdown' : '' }}">
-                <a href="#" data-toggle="collapse" data-target="#setupDropdown">
+                <a href="#" data-toggle="collapse" data-target="#setupDropdown2">
                     <i class="now-ui-icons business_bulb-63"></i>
                     <p>Test Setup</p>
                 </a>
-                <ul class="collapse list-unstyled" id="setupDropdown">
+                <ul class="collapse list-unstyled" id="setupDropdown2">
                     @foreach(['units', 'methods', 'tests'] as $item)
                         <li class="{{ $item == request()->path() ? 'active' : '' }}">
                             <a href="{{ url($item) }}" style="padding-left: 30px;">

@@ -101,8 +101,8 @@
             <table id="datatable" class="table">
               <thead class=" text-primary">
                 <th class="w-10p">ID </th>
-                <th class="w-10p">Institution </th>
                 <th class="w-10p">Instrument</th>
+                <th class="w-10p">Institution </th>
                 {{--<th class="w-10p">Added By</th>
                 <th class="w-10p">Updated By</th>--}}
                 <th class="w-10p" style="text-align: center;">ACTIONS</th>
@@ -112,15 +112,15 @@
                 <tr>
                   <td>{{ $data->id }}</td>
                   <td>
+                      @if ($data->instrument)
+                      {{ $data->instrument->instrumentname}}
+                      @else
+                          No User
+                      @endif
+                  </td>
+                  <td>
                     @if ($data->institution)
                     {{ $data->institution->institution}}
-                    @else
-                        No User
-                    @endif
-                </td>
-                <td>
-                    @if ($data->instrument)
-                    {{ $data->instrument->instrumentname}}
                     @else
                         No User
                     @endif

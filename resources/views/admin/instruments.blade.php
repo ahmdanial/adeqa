@@ -21,7 +21,7 @@
             <div class="mb-3">
               <label for="recipient-name" class="col-form-label">Instrument:</label>
               <input type="text" name="instrumentname" class="form-control" id="instrumentname">
-            </div>            
+            </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">CLOSE</button>
@@ -86,7 +86,7 @@
             <table id="datatable" class="table">
               <thead class=" text-primary">
                 <th class="w-10p">ID Instrument</th>
-                <th class="w-10p">Instrument Name</th>                
+                <th class="w-10p">Instrument Name</th>
                 <th class="w-10p">Added By</th>
                 <th class="w-10p">Updated By</th>
                 <th class="w-10p" style="text-align: center;">ACTIONS</th>
@@ -95,7 +95,7 @@
                 @foreach ($instrument as $data)
                 <tr>
                   <td>{{ $data->id }}</td>
-                  <td>{{ $data->instrumentname }}</td>                 
+                  <td>{{ $data->instrumentname }}</td>
                   <td>
                     @if ($data->addedBy)
                         {{ $data->addedBy->username }}

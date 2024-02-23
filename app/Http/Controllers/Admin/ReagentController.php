@@ -5,16 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Reagent;
-use App\Models\Instrument;
+use App\Models\AssignInstrument;
 use Illuminate\Support\Facades\Session;
 
 class ReagentController extends Controller
 {
     public function index()
     {
-        $instrument = Instrument::all();
-        $reagent = Reagent::all();
-        return view('admin.reagents', compact('instrument', 'reagent'));
+        $assignInstruments = AssignInstrument::all();
+        $reagents = Reagent::all();
+        return view('admin.reagents', compact('assignInstruments', 'reagents'));
     }
 
     public function store(Request $request)
@@ -35,7 +35,7 @@ class ReagentController extends Controller
     public function edit($id)
     {
         $reagent = Reagent::findOrFail($id);
-        $instrument = Instrument::all();
+        $instrument = AssignInstrument::all();
 
         return view('admin.reagents.edit', compact('reagent', 'instrument'));
     }
